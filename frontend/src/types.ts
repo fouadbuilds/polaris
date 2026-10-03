@@ -12,6 +12,8 @@ export interface Site {
   trend_summary: string
   trend_series: TrendPoint[]
   current_rcm_note: string
+  selection_rationale: string
+  selection_source_url: string
 }
 
 export interface SitesResponse {

@@ -28,7 +28,13 @@ export function SitePanel({ site }: SitePanelProps) {
         <ScoreBadge score={site.durability_score} />
       </div>
       <p className="summary">{site.trend_summary}</p>
+      <p className="methodology-note"><strong>Score basis:</strong> direction of the long-term trend and year-to-year consistency. This prototype score is not a construction recommendation.</p>
       <TrendChart points={site.trend_series} />
+      <div className="selection-rationale">
+        <span>Why this candidate</span>
+        <p>{site.selection_rationale}</p>
+        <a href={site.selection_source_url} target="_blank" rel="noreferrer">Read the supporting source</a>
+      </div>
       <div className="rcm-note">
         <span>RCM current state</span>
         <p>{site.current_rcm_note}</p>

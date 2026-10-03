@@ -8,12 +8,13 @@ import { useSites } from './hooks/useSites'
 export default function App() {
   const { data, error, isLoading, reload } = useSites()
   const [selectedSiteId, setSelectedSiteId] = useState<string | null>(null)
+  const rankedSites = data ? [...data.sites].sort((left, right) => right.durability_score - left.durability_score) : []
 
   useEffect(() => {
-    if (!selectedSiteId && data?.sites[0]) {
-      setSelectedSiteId(data.sites[0].id)
+    if (!selectedSiteId && rankedSites[0]) {
+      setSelectedSiteId(rankedSites[0].id)
     }
-  }, [data, selectedSiteId])
+  }, [rankedSites, selectedSiteId])
 
   const selectedSite = data?.sites.find((site) => site.id === selectedSiteId) ?? null
 
@@ -26,6 +27,11 @@ export default function App() {
         </div>
         <p className="app-header__context">Decision support for long-horizon port planning—not live navigation advice.</p>
       </header>
+      <section className="data-status" aria-label="Prototype data status">
+        <strong>Prototype data status</strong>
+        <span>Scores and trend series are fixtures while historical and RCM processing is built. Some RCM products are publicly released through Canada’s EODMS; the first site-specific scene is pending selection.</span>
+        <a href="https://www.asc-csa.gc.ca/eng/satellites/radarsat/access-to-data/" target="_blank" rel="noreferrer">RCM access details</a>
+      </section>
 
       <section className="workspace" aria-label="Port candidate comparison">
         <div className="map-area">
@@ -38,7 +44,7 @@ export default function App() {
           )}
           {data && data.sites.length === 0 && <div className="map-status" role="status">No candidate sites are available yet.</div>}
           {data && data.sites.length > 0 && (
-            <SiteMap sites={data.sites} selectedSiteId={selectedSiteId} onSelect={setSelectedSiteId} />
+            <SiteMap sites={rankedSites} selectedSiteId={selectedSiteId} onSelect={setSelectedSiteId} />
           )}
         </div>
         <SitePanel site={selectedSite} />
@@ -49,12 +55,12 @@ export default function App() {
           <div className="section-heading">
             <div>
               <p className="eyebrow">Comparison set</p>
-              <h2 id="candidate-heading">Candidate signals</h2>
+              <h2 id="candidate-heading">Ranked by durability</h2>
             </div>
             <p>Updated {new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' }).format(new Date(data.updated))}</p>
           </div>
           <div className="candidate-list__items">
-            {data.sites.map((site) => (
+            {rankedSites.map((site, index) => (
               <button
                 type="button"
                 key={site.id}
@@ -63,6 +69,7 @@ export default function App() {
                 aria-pressed={site.id === selectedSiteId}
               >
                 <span>
+                  <small className="candidate__rank">Rank {String(index + 1).padStart(2, '0')}</small>
                   <strong>{site.name}</strong>
                   <small>{site.trend_summary}</small>
                 </span>
@@ -74,7 +81,7 @@ export default function App() {
       )}
 
       <footer>
-        Scores, trends, and RCM notes are illustrative fixtures. They are not a navigation, safety, or port-siting recommendation.
+        This prototype is for comparing evidence, not navigation, safety, or a port-siting recommendation.
       </footer>
     </main>
   )

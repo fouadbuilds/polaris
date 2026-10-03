@@ -41,6 +41,11 @@ export function SiteMap({ sites, selectedSiteId, onSelect }: SiteMapProps) {
           )
         })}
       </MapContainer>
+      <div className="map-legend" aria-label="Durability score legend">
+        <span><i className="legend-dot legend-dot--high" />70–100 more durable</span>
+        <span><i className="legend-dot legend-dot--medium" />50–69 watch closely</span>
+        <span><i className="legend-dot legend-dot--low" />0–49 less durable</span>
+      </div>
     </div>
   )
 }

@@ -21,7 +21,9 @@ def test_list_sites_matches_the_public_contract() -> None:
     first_site = body["sites"][0]
     assert 0 <= first_site["durability_score"] <= 100
     assert len(first_site["trend_series"]) >= 2
-    assert first_site["current_rcm_note"].startswith("Prototype only")
+    assert "RCM scene" in first_site["current_rcm_note"]
+    assert first_site["selection_rationale"]
+    assert first_site["selection_source_url"].startswith("https://")
 
 
 def test_api_only_allows_the_local_frontend_origin() -> None:

@@ -2,7 +2,7 @@
 
 from datetime import datetime
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, HttpUrl
 
 
 class TrendPoint(BaseModel):
@@ -25,6 +25,8 @@ class Site(BaseModel):
     trend_summary: str = Field(min_length=1, max_length=280)
     trend_series: list[TrendPoint] = Field(min_length=2)
     current_rcm_note: str = Field(min_length=1, max_length=280)
+    selection_rationale: str = Field(min_length=1, max_length=360)
+    selection_source_url: HttpUrl
 
 
 class SitesResponse(BaseModel):
