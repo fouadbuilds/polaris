@@ -64,11 +64,11 @@ select, input[type="date"] { width: 100%; min-height: 38px; border: 1px solid #d
 .map-canvas { min-width: 0; min-height: 0; position: relative; }
 .map { width: 100%; height: 100%; }
 .leaflet-container { font: inherit; background: #aeced7; }
-.leaflet-container.map--simple { background: #68b8e0; }
+.leaflet-container.map--simple { background: var(--map-water); }
 .map-colors { display: flex; align-items: center; gap: 6px; }
 .land-swatch, .water-swatch { display: inline-block; width: 16px; height: 12px; border: 1px solid #7894a1; border-radius: 2px; }
-.land-swatch { background: #f4d676; }
-.water-swatch { background: #68b8e0; }
+.land-swatch { background: var(--map-land); }
+.water-swatch { background: var(--map-water); }
 .cache-status { margin-top: 18px; padding: 12px; border-radius: 8px; background: #f0f7fa; color: #536f7d; font-size: 11px; }
 .cache-status p { margin-bottom: 0; }
 .unassessed-score { padding: 8px 10px; border-radius: 6px; background: #eef3f6; color: #536f7d; font-size: 11px; font-weight: 600; white-space: nowrap; }
@@ -94,11 +94,14 @@ select, input[type="date"] { width: 100%; min-height: 38px; border: 1px solid #d
 .route-detail a { display: block; font-size: 10px; margin: 10px 0; }
 .route-detail details { font-size: 10px; margin-top: 15px; }
 .route-waypoints { padding: 10px; background: #f4f8fa; border-radius: 6px; font-size: 10px; }
-.route-line { width: 17px; border-top: 3px solid; }
-.route-line--passage { border-color: #8b3f22; }
-.route-line--used { border-color: #08756b; }
-.route-line--proposed { border-color: #7848ac; border-top-style: dashed; }
-.route-legend { gap: 5px !important; }
+/* Cable colors identify individual routes; dashes identify proposed connections. */
+.route-color-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; box-shadow: 0 0 0 2px white; }
+.route-cable { filter: drop-shadow(0 1px 1px #193f5320); }
+.route-cable-legend { display: grid; grid-template-columns: 1fr 1fr; gap: 5px 10px; }
+.route-cable-legend button { display: flex; align-items: center; gap: 6px; padding: 3px 0; background: transparent; border: 0; color: #496575; font-size: 9px; text-align: left; cursor: pointer; }
+.route-cable-legend button[aria-pressed="true"] { font-weight: 750; }
+.route-cable-legend i { width: 18px; border-top: 3px solid; flex-shrink: 0; border-radius: 2px; }
+.route-cable-legend small { grid-column: 1 / -1; font-size: 9px; color: #708792; padding-top: 4px; }
 .map-toolbar { position: absolute; top: 14px; right: 14px; z-index: 1000; display: flex; padding: 4px; gap: 3px; background: white; border: 1px solid #d6e0e7; border-radius: 7px; box-shadow: 0 3px 16px #193f531c; }
 .map-toolbar button { padding: 8px 10px; border: 0; border-radius: 4px; background: #f4f7f9; color: #426575; font-size: 11px; font-weight: 650; }
 .map-toolbar .controls-toggle { display: none; }
@@ -108,10 +111,10 @@ select, input[type="date"] { width: 100%; min-height: 38px; border: 1px solid #d
 .map-context span { margin-top: 4px; font-size: 12px; color: #244b60; }
 .map-legend { position: absolute; z-index: 1000; bottom: 27px; right: 16px; display: grid; gap: 7px; padding: 13px; border-radius: 7px; border: 1px solid #d6e3e9; background: #fffffff2; box-shadow: 0 3px 16px #193f531c; color: #5f7b8b; font-size: 10px; max-width: 290px; }
 .map-legend span { display: flex; align-items: center; gap: 8px; }
-.ice-swatch { display: inline-block; height: 12px; width: 18px; border: 1px solid #7096ad; background: #fff; border-radius: 3px; flex-shrink: 0; }
+.ice-swatch { display: inline-block; height: 12px; width: 18px; border: 1px solid var(--map-ice-outline); background: var(--map-ice); border-radius: 3px; flex-shrink: 0; }
 .outline-status { position: absolute; bottom: 28px; left: 15px; z-index: 1000; background: white; border-radius: 6px; padding: 10px; font-size: 11px; box-shadow: 0 2px 8px #173e5333; }
 .leaflet-tooltip.waterway-label { background: #ffffffd9; border: 0; color: #40697a; box-shadow: none; font-size: 10px; font-style: italic; }
-.leaflet-tooltip.port-label { background: white; color: #394d5c; border: 1px solid #d4dfe5; font-size: 10px; font-weight: 650; box-shadow: 0 2px 5px #12354718; }
+.leaflet-tooltip.port-label { background: var(--map-label-background); color: var(--map-label-text); border: 1px solid #d4dfe5; font-size: 10px; font-weight: 650; box-shadow: 0 2px 5px #12354718; }
 .satellite-controls form { display: grid; gap: 8px; font-size: 11px; }
 .satellite-controls button { padding: 10px; color: white; background: #1c819b; border: 0; border-radius: 6px; font-size: 11px; }
 .satellite-caption { display: grid; gap: 10px; font-size: 10px; }
@@ -155,3 +158,7 @@ select, input[type="date"] { width: 100%; min-height: 38px; border: 1px solid #d
 @media (max-width: 400px) {
  .map-toolbar button { font-size: 10px; padding: 7px 5px; }
 }
+
+/* Labels never intercept pointer events intended for a port or a route. */
+.leaflet-tooltip { pointer-events: none; font-size: 11px; line-height: 1.35; }
+.route-hover-card { position: absolute; left: 18px; bottom: 35px; z-index: 600; display: grid; gap: 4px; max-width: 290px; padding: 10px 12px; border: 1px solid #d4dfe5; border-radius: 8px; background: var(--map-label-background); color: var(--map-label-text); font-size: 11px; line-height: 1.4; box-shadow: 0 2px 8px #12354718; pointer-events: none; }

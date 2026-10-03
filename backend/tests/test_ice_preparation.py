@@ -45,9 +45,9 @@ def test_saved_manifest_matches_all_baked_assets(month):
     assert [f['year'] for f in data['frames'] if f['kind'] == 'scenario'] == [2035, 2050]
     assert len(data['sources']) == len(observations)
     for frame in data['frames']:
-        assert Path(frame['url']).name.startswith(month + '-')
+        assert Path(frame['vector_url']).name.startswith(month + '-')
+        assert 'url' not in frame
         assert 0 <= frame['mean_concentration_percent'] <= 100
-        assert (output / Path(frame['url']).name).read_bytes().startswith(b'\x89PNG\r\n\x1a\n')
         vector = json.loads((output / Path(frame['vector_url']).name).read_text())
         assert vector['type'] == 'FeatureCollection'
         assert all(feature['properties']['year'] == frame['year'] for feature in vector['features'])

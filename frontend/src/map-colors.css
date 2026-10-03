@@ -1,0 +1,24 @@
+/* Edit these values to change the map palette. No API/data rebuild required. */
+:root {
+  --map-land: #f4d676;
+  --map-land-outline: #c6a247;
+  --map-water: #68b8e0;
+  --map-ice: #ffffff;
+  --map-ice-outline: #7096ad;
+  --map-study-outline: #597b85;
+  --map-port: #bd722c;
+  --map-port-outline: #ffffff;
+  /* Each cable has its own color, shared by the map and route controls. */
+  --map-route-nwp-victoria: #e04b36;
+  --map-route-nwp-prince-wales: #3264ce;
+  --map-route-nwp-rae-simpson: #8d42b8;
+  --map-route-eastern-sealift: #008b77;
+  --map-route-western-resupply: #c67706;
+  --map-route-churchill-atlantic: #39485e;
+  --map-route-grays-west: #ce3681;
+  --map-route-grays-east: #008fae;
+  --map-route-grays-road: #667829;
+  --map-route-casing: #ffffff;
+  --map-label-background: #ffffffeb;
+  --map-label-text: #394d5c;
+}

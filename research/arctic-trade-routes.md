@@ -82,7 +82,7 @@ those tracks. [PAME data access overview](https://pame.is/).
 
 ## Reuse and updates
 
-The bundled file is `frontend/public/data/routes-canada-v2.geojson`; the browser caches it for offline use.
+The bundled file is `frontend/public/data/routes-canada.geojson`; the browser caches it for offline use.
 `scripts/bake_routes.py` records the route metadata, source links and schematic geometry preparation.
 Run it with the backend Python environment after the world land file has been prepared. When changing
 the dataset, use a new filename and update the frontend and service-worker paths so older browser

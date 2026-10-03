@@ -17,7 +17,6 @@ dependencies = [
 [project.optional-dependencies]
 data = [
   "rasterio>=1.4,<2",
-  "pillow>=11,<13",
   "shapely>=2,<3",
   "pyshp>=2.3,<3",
 ]

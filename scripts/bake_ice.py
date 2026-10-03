@@ -12,10 +12,9 @@ from pathlib import Path
 
 import httpx
 import numpy as np
-from PIL import Image
 import rasterio
-from rasterio.transform import from_bounds, xy
-from rasterio.warp import reproject, Resampling, transform, transform_bounds
+from rasterio.transform import xy
+from rasterio.warp import transform
 
 ROOT = Path(__file__).resolve().parents[1]
 CACHE = ROOT / '.cache/seaice'
@@ -95,47 +94,16 @@ def bake(month):
     holdout_mask = region & np.all(np.isfinite(training[-5:]), axis=0) & np.isfinite(heldout).all(axis=0)
     mae = float(np.mean(np.abs(heldout[:, holdout_mask] - training[-5:, holdout_mask])))
 
-    bbox = transform_bounds('EPSG:4326', 'EPSG:3857', west, south, east, north)
-    width = 1100
-    height = round(width * (bbox[3] - bbox[1]) / (bbox[2] - bbox[0]))
-    target_affine = from_bounds(*bbox, width, height)
-
-    def render(data, filename):
-        projected = np.full((height, width), 2550, dtype=np.float32)
-        reproject(data.astype(np.float32), projected, src_transform=affine, src_crs=crs,
-                  dst_transform=target_affine, dst_crs='EPSG:3857', resampling=Resampling.nearest)
-        rgba = np.zeros((height, width, 4), dtype=np.uint8)
-        ocean = projected <= 1000
-        # Below 15% is the source product's low-concentration cutoff, not
-        # evidence of an ice-free, navigable channel.
-        t = np.where(projected >= 150, np.clip(projected / 1000, 0, 1), 0)
-        dark, light = np.array([13, 55, 83]), np.array([238, 250, 255])
-        rgba[ocean, :3] = (dark + t[ocean, None] * (light - dark)).astype(np.uint8)
-        rgba[ocean, 3] = 255
-        rgba[projected == 2550] = [231, 174, 56, 255]
-        # Flat land and coastline colours make this a stand-alone simplified map.
-        rgba[projected == 2540] = [204, 216, 210, 255]
-        rgba[projected == 2530] = [153, 176, 169, 255]
-        rgba[projected == 2510] = [91, 111, 124, 255]
-        Image.fromarray(rgba).save(OUTPUT / filename, optimize=True)
-
     frames = []
     sources = []
-    for year, path, data in zip(YEARS, paths, raw):
-        filename = f'{prefix}-{year}.png'
-        render(data, filename)
-        frames.append({'year': year, 'kind': 'observed', 'url': '/data/ice/' + filename,
+    for year, path in zip(YEARS, paths):
+        frames.append({'year': year, 'kind': 'observed',
                        'mean_concentration_percent': round(float(values[YEARS.index(year)][common_ocean].mean()), 1)})
         sources.append({'year': year, 'url': base + path.name, 'sha256': hashlib.sha256(path.read_bytes()).hexdigest()})
     for year in [2035, 2050]:
         forecast = predict(intercept, slope, year)
-        prediction_raw = np.where(np.isfinite(forecast), forecast * 10, raw[TRAINING_YEARS.index(2024)]).astype(np.float32)
-        # Unmodelled ocean cells are missing, not silently borrowed observations.
-        prediction_raw[(raw[TRAINING_YEARS.index(2024)] <= 1000) & ~np.isfinite(forecast)] = 2550
-        filename = f'{prefix}-{year}-scenario.png'
-        render(prediction_raw, filename)
         model_ocean = common_ocean & np.isfinite(forecast)
-        frames.append({'year': year, 'kind': 'scenario', 'url': '/data/ice/' + filename,
+        frames.append({'year': year, 'kind': 'scenario',
                        'mean_concentration_percent': round(float(forecast[model_ocean].mean()), 1)})
     manifest = {
         'dataset': 'NOAA/NSIDC Sea Ice Index, Version 4 (G02135)',
@@ -145,14 +113,12 @@ def bake(month):
         'latest_observed_year': 2026, 'baseline_year': 1996,
         'metric': 'Unweighted mean concentration over a fixed set of ocean grid cells within 56–80°N, 150–42°W. This geographic window includes waters beyond Canada; it is not a national or shipping-route metric.',
         'metric_ocean_cells': int(common_ocean.sum()),
-        'method': f'Per-cell ordinary least-squares linear trend fitted to {month_name} observations from 1996–2024, extrapolated and clipped to 0–100%. Values below 15% share the lowest display colour. A trend extrapolation, not a climate-model forecast; no calibrated probability or confidence interval.',
-        'holdout': {'training': '1996–2019', 'validation': '2020–2024', 'mean_absolute_error_percentage_points': round(mae, 1), 'ocean_cells': int(holdout_mask.sum()), 'meaning': 'Mean absolute per-cell error over withheld Septembers in this map window; does not quantify future uncertainty.'},
+        'method': f'Per-cell ordinary least-squares linear trend fitted to {month_name} observations from 1996–2024, extrapolated and clipped to 0–100%. Display outlines use a 15% concentration threshold. A trend extrapolation, not a climate-model forecast; no calibrated probability or confidence interval.',
+        'holdout': {'training': '1996–2019', 'validation': '2020–2024', 'mean_absolute_error_percentage_points': round(mae, 1), 'ocean_cells': int(holdout_mask.sum()), 'meaning': f'Mean absolute per-cell error over withheld {month_name} observations in this map window; does not quantify future uncertainty.'},
         'limitations': ['25 km grids cannot resolve many narrow Northwest Passage channels or port approaches.', 'Historical and recent concentration inputs change in January 2025 (GSFC to AMSR2); forecasts exclude 2025–2026 from fitting.', f'{month_name} monthly averages are not daily passage conditions. Below 15% concentration is not proof of open water.', 'Linear extrapolation omits future emissions, ice transport, feedbacks and physical constraints; skill may deteriorate with lead time.', 'All maps describe sea ice concentration, not thickness, glacier melt or navigability.'],
         'frames': frames, 'sources': sources,
     }
     (OUTPUT / f'manifest-{prefix}.json').write_text(json.dumps(manifest, indent=2) + '\n')
-    if month == 9:
-        (OUTPUT / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
     print(f'{month_name}: prepared {len(frames)} maps; {common_ocean.sum()} fixed ocean cells; holdout MAE {mae:.1f} percentage points.')
 
 

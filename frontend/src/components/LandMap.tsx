@@ -15,5 +15,5 @@ export function LandMap() {
   }, [])
   if (error) return <div className="outline-status" role="alert">Saved land map could not load. Refresh to retry.</div>
   return land && <GeoJSON data={land} interactive={false} attribution='Land: <a href="https://www.naturalearthdata.com/">Natural Earth</a>'
-    style={{ color: '#c6a247', weight: 0.7, fillColor: '#f4d676', fillOpacity: 1 }} />
+    style={{ color: 'var(--map-land-outline)', weight: 0.7, fillColor: 'var(--map-land)', fillOpacity: 1 }} />
 }

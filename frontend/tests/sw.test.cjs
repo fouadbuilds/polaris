@@ -30,6 +30,7 @@ function worker() {
     async fetch(request) {
       requests.push(key(request));
       if (!online) throw new Error('Offline');
+      if (key(request).includes('missing-data')) return new Response('<!doctype html>', {headers: {'content-type': 'text/html'}});
       if (key(request).includes('failed')) return new Response('Quota reached', {status: 429});
       if (key(request).includes('manifest-')) return Response.json({frames: [{vector_url: '/data/ice/saved-outline.geojson'}]});
       return new Response('saved data');
@@ -79,7 +80,7 @@ test('offline preparation saves unvisited frames and both seasonal manifests', a
   const saved = await app.get('http://127.0.0.1:5173/data/ice/saved-outline.geojson');
   assert.equal(await saved.text(), 'saved data');
   assert.equal(app.requests.length, before);
-  assert.equal(await (await app.get('http://127.0.0.1:5173/data/routes-canada-v2.geojson')).text(), 'saved data');
+  assert.equal(await (await app.get('http://127.0.0.1:5173/data/routes-canada.geojson?display=curves-4')).text(), 'saved data');
   assert.equal(app.requests.length, before);
 });
 
@@ -108,4 +109,12 @@ test('port catalogue refreshes online and keeps its offline fallback', async () 
   assert.equal(app.requests.length, 2);
   app.offline();
   assert.equal(await (await app.get(url)).text(), 'saved data');
+});
+
+test('missing map data cannot poison the geographical cache with an HTML page', async () => {
+  const app = worker();
+  const url = 'http://127.0.0.1:5173/data/missing-data.geojson';
+  await assert.rejects(app.get(url), /received a page/);
+  await assert.rejects(app.get(url), /received a page/);
+  assert.equal(app.requests.length, 2);
 });

@@ -103,9 +103,31 @@ def coast_aligned_display(routes):
         for first, second in zip(cells, cells[1:]):
             path.extend(leg(first, second)[:-1])
         path.append(cells[-1])
-        line = LineString([[west + col*step, south + row*step] for row,col in path]).simplify(0.009)
+        original = LineString([[west + col*step, south + row*step] for row,col in path])
+        line = original.simplify(0.025)
+        if line.intersection(land).length >= 0.05:
+            line = original.simplify(0.009)
+        # Round display corners with quadratic curves only where their samples
+        # remain outside land. This changes presentation, not route feasibility.
+        points = list(line.coords)
+        for _ in range(2):
+            rounded = [points[0]]
+            for previous, current, following in zip(points, points[1:], points[2:]):
+                entry = tuple(0.25*a + 0.75*b for a,b in zip(previous,current))
+                exit = tuple(0.75*a + 0.25*b for a,b in zip(current,following))
+                curve = [tuple((1-t)**2*a + 2*(1-t)*t*b + t*t*c for a,b,c in zip(entry,current,exit)) for t in np.linspace(0,1,5)]
+                if LineString(curve).intersects(land):
+                    rounded.append(current)
+                else:
+                    rounded.extend(curve)
+            rounded.append(points[-1])
+            candidate = LineString(rounded)
+            if candidate.intersection(land).length >= 0.05:
+                break
+            points = rounded
+        line = LineString(points)
         route['geometry']['coordinates'] = [list(point) for point in line.coords]
-        route['properties']['geometry_method'] += ' Sea segments follow an approximate land mask for display only; no depth or ice routing is performed.'
+        route['properties']['geometry_method'] += ' Sea segments follow an approximate land mask, with rounded display corners where the coast allows; no depth or ice routing is performed.'
 
 
 def feature(id, name, category, summary, cargo, season, waypoints, constraints, source_ids, positions):
@@ -183,8 +205,8 @@ def main():
         'time_relationship': 'Route visibility is independent of the ice-map year and season. Showing a corridor does not certify access in the selected year.',
         'scope': 'Canada and the Northwest Passage. Grays Bay market connectors are inferred concepts, not approved services.',
     }, 'features': routes}
-    target = ROOT / 'frontend/public/data/routes-canada-v2.geojson'
-    target.write_text(json.dumps(output, indent=2) + '\n')
+    target = ROOT / 'frontend/public/data/routes-canada.geojson'
+    target.write_text(json.dumps(output, separators=(',', ':')) + '\n')
     print(f'Saved {len(routes)} researched schematic corridors to {target.name}')
 
 

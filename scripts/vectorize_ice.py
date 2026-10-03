@@ -88,8 +88,6 @@ def main(months=('march', 'september')):
         manifest['display_method'] = 'Display approximation of ice extent at >=15% concentration. Land gaps in the coarse grid are interpolated for display, then Natural Earth land polygons are subtracted. Boundaries are smoothed using 18 km closing and 8 km opening, simplified at 3 km. Small features may disappear. Statistics use original ocean cells; these outlines are not higher-resolution ice observations.'
         manifest['land_source'] = {'url': 'https://www.naturalearthdata.com/downloads/10m-physical-vectors/10m-land/', 'download_url': 'https://naturalearth.s3.amazonaws.com/10m_physical/ne_10m_land.zip', 'sha256': hashlib.sha256(land_path.read_bytes()).hexdigest()}
         manifest_path.write_text(json.dumps(manifest, indent=2) + '\n')
-        if name == 'september':
-            (OUTPUT / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
         print(f'{name}: saved {len(manifest["frames"])} vector outlines')
 
 

@@ -3,7 +3,7 @@ import { GeoJSON } from 'react-leaflet'
 import type { ComponentProps } from 'react'
 type OutlineData = ComponentProps<typeof GeoJSON>['data']
 
-export function IceOutline({ url, scenario, onStatus }: { url: string; scenario: boolean; onStatus: (message: string | null) => void }) {
+export function IceOutline({ url, scenario, onStatus, opacity = 1 }: { url: string; scenario: boolean; onStatus: (message: string | null) => void; opacity?: number }) {
   const [loaded, setLoaded] = useState<{ url: string; data: OutlineData } | null>(null)
   useEffect(() => {
     const controller = new AbortController()
@@ -16,5 +16,5 @@ export function IceOutline({ url, scenario, onStatus }: { url: string; scenario:
   }, [url, onStatus])
   if (loaded?.url !== url) return null
   return <GeoJSON key={url} data={loaded.data} interactive={false} attribution='Ice: <a href="https://nsidc.org/data/g02135/versions/4">NOAA/NSIDC</a> · approximate display outlines'
-    style={{ color: '#7096ad', weight: 1.3, fillColor: '#ffffff', fillOpacity: 1, dashArray: scenario ? '6 4' : undefined }} />
+    style={{ color: 'var(--map-ice-outline)', weight: 1.3, fillColor: 'var(--map-ice)', fillOpacity: opacity, dashArray: scenario ? '6 4' : undefined }} />
 }

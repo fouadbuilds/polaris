@@ -1,7 +1,7 @@
 // Bump the data version whenever the baked geographical files change.
 const PREFIX = 'polaris-';
-const DATA = PREFIX + 'data-v3';
-const SHELL = PREFIX + 'shell-v3';
+const DATA = PREFIX + 'data-v5';
+const SHELL = PREFIX + 'shell-v5';
 const API = PREFIX + 'previews-v1';
 const TILES = PREFIX + 'satellite-tiles-v1';
 const tileHosts = new Set(['server.arcgisonline.com', 'gibs.earthdata.nasa.gov']);
@@ -37,6 +37,9 @@ async function cached(request, cacheName, limit) {
   const hit = await cache.match(request);
   if (hit) return hit;
   const response = await fetch(request);
+  if (new URL(request.url).pathname.startsWith('/data/') && response.headers.get('content-type')?.includes('text/html')) {
+    throw new Error('Map data unavailable; received a page instead of geographical data.');
+  }
   if (response.ok || response.type === 'opaque') await put(cache, request, response, limit);
   return response;
 }
@@ -72,7 +75,7 @@ self.addEventListener('fetch', event => {
 });
 
 async function warmData(apiUrl) {
-  const paths = ['/data/world-land.geojson', '/data/routes-canada-v2.geojson'];
+  const paths = ['/data/world-land.geojson', '/data/routes-canada.geojson?display=curves-4'];
   for (const month of ['march', 'september']) {
     const url = `/data/ice/manifest-${month}.json`;
     const response = await cached(new Request(new URL(url, self.location.origin)), DATA);

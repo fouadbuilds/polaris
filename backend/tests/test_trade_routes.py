@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
-DATA = json.loads((ROOT / 'frontend/public/data/routes-canada-v2.geojson').read_text())
+DATA = json.loads((ROOT / 'frontend/public/data/routes-canada.geojson').read_text())
 
 
 def test_proposals_are_separated_from_used_logistics_and_have_sources():

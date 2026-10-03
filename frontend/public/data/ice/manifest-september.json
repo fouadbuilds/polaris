@@ -18,13 +18,13 @@
   "baseline_year": 1996,
   "metric": "Unweighted mean concentration over a fixed set of ocean grid cells within 56\u201380\u00b0N, 150\u201342\u00b0W. This geographic window includes waters beyond Canada; it is not a national or shipping-route metric.",
   "metric_ocean_cells": 8312,
-  "method": "Per-cell ordinary least-squares linear trend fitted to September observations from 1996\u20132024, extrapolated and clipped to 0\u2013100%. Values below 15% share the lowest display colour. A trend extrapolation, not a climate-model forecast; no calibrated probability or confidence interval.",
+  "method": "Per-cell ordinary least-squares linear trend fitted to September observations from 1996\u20132024, extrapolated and clipped to 0\u2013100%. Display outlines use a 15% concentration threshold. A trend extrapolation, not a climate-model forecast; no calibrated probability or confidence interval.",
   "holdout": {
     "training": "1996\u20132019",
     "validation": "2020\u20132024",
     "mean_absolute_error_percentage_points": 3.9,
     "ocean_cells": 8312,
-    "meaning": "Mean absolute per-cell error over withheld Septembers in this map window; does not quantify future uncertainty."
+    "meaning": "Mean absolute per-cell error over withheld September observations in this map window; does not quantify future uncertainty."
   },
   "limitations": [
     "25 km grids cannot resolve many narrow Northwest Passage channels or port approaches.",
@@ -37,231 +37,198 @@
     {
       "year": 1996,
       "kind": "observed",
-      "url": "/data/ice/september-1996.png",
       "mean_concentration_percent": 21.1,
       "vector_url": "/data/ice/september-1996-outline.geojson"
     },
     {
       "year": 1997,
       "kind": "observed",
-      "url": "/data/ice/september-1997.png",
       "mean_concentration_percent": 20.1,
       "vector_url": "/data/ice/september-1997-outline.geojson"
     },
     {
       "year": 1998,
       "kind": "observed",
-      "url": "/data/ice/september-1998.png",
       "mean_concentration_percent": 9.5,
       "vector_url": "/data/ice/september-1998-outline.geojson"
     },
     {
       "year": 1999,
       "kind": "observed",
-      "url": "/data/ice/september-1999.png",
       "mean_concentration_percent": 12.9,
       "vector_url": "/data/ice/september-1999-outline.geojson"
     },
     {
       "year": 2000,
       "kind": "observed",
-      "url": "/data/ice/september-2000.png",
       "mean_concentration_percent": 16.2,
       "vector_url": "/data/ice/september-2000-outline.geojson"
     },
     {
       "year": 2001,
       "kind": "observed",
-      "url": "/data/ice/september-2001.png",
       "mean_concentration_percent": 16.1,
       "vector_url": "/data/ice/september-2001-outline.geojson"
     },
     {
       "year": 2002,
       "kind": "observed",
-      "url": "/data/ice/september-2002.png",
       "mean_concentration_percent": 13.8,
       "vector_url": "/data/ice/september-2002-outline.geojson"
     },
     {
       "year": 2003,
       "kind": "observed",
-      "url": "/data/ice/september-2003.png",
       "mean_concentration_percent": 15.2,
       "vector_url": "/data/ice/september-2003-outline.geojson"
     },
     {
       "year": 2004,
       "kind": "observed",
-      "url": "/data/ice/september-2004.png",
       "mean_concentration_percent": 18.0,
       "vector_url": "/data/ice/september-2004-outline.geojson"
     },
     {
       "year": 2005,
       "kind": "observed",
-      "url": "/data/ice/september-2005.png",
       "mean_concentration_percent": 18.3,
       "vector_url": "/data/ice/september-2005-outline.geojson"
     },
     {
       "year": 2006,
       "kind": "observed",
-      "url": "/data/ice/september-2006.png",
       "mean_concentration_percent": 13.6,
       "vector_url": "/data/ice/september-2006-outline.geojson"
     },
     {
       "year": 2007,
       "kind": "observed",
-      "url": "/data/ice/september-2007.png",
       "mean_concentration_percent": 12.1,
       "vector_url": "/data/ice/september-2007-outline.geojson"
     },
     {
       "year": 2008,
       "kind": "observed",
-      "url": "/data/ice/september-2008.png",
       "mean_concentration_percent": 9.9,
       "vector_url": "/data/ice/september-2008-outline.geojson"
     },
     {
       "year": 2009,
       "kind": "observed",
-      "url": "/data/ice/september-2009.png",
       "mean_concentration_percent": 13.5,
       "vector_url": "/data/ice/september-2009-outline.geojson"
     },
     {
       "year": 2010,
       "kind": "observed",
-      "url": "/data/ice/september-2010.png",
       "mean_concentration_percent": 10.7,
       "vector_url": "/data/ice/september-2010-outline.geojson"
     },
     {
       "year": 2011,
       "kind": "observed",
-      "url": "/data/ice/september-2011.png",
       "mean_concentration_percent": 8.8,
       "vector_url": "/data/ice/september-2011-outline.geojson"
     },
     {
       "year": 2012,
       "kind": "observed",
-      "url": "/data/ice/september-2012.png",
       "mean_concentration_percent": 5.6,
       "vector_url": "/data/ice/september-2012-outline.geojson"
     },
     {
       "year": 2013,
       "kind": "observed",
-      "url": "/data/ice/september-2013.png",
       "mean_concentration_percent": 17.3,
       "vector_url": "/data/ice/september-2013-outline.geojson"
     },
     {
       "year": 2014,
       "kind": "observed",
-      "url": "/data/ice/september-2014.png",
       "mean_concentration_percent": 15.5,
       "vector_url": "/data/ice/september-2014-outline.geojson"
     },
     {
       "year": 2015,
       "kind": "observed",
-      "url": "/data/ice/september-2015.png",
       "mean_concentration_percent": 8.8,
       "vector_url": "/data/ice/september-2015-outline.geojson"
     },
     {
       "year": 2016,
       "kind": "observed",
-      "url": "/data/ice/september-2016.png",
       "mean_concentration_percent": 8.3,
       "vector_url": "/data/ice/september-2016-outline.geojson"
     },
     {
       "year": 2017,
       "kind": "observed",
-      "url": "/data/ice/september-2017.png",
       "mean_concentration_percent": 11.2,
       "vector_url": "/data/ice/september-2017-outline.geojson"
     },
     {
       "year": 2018,
       "kind": "observed",
-      "url": "/data/ice/september-2018.png",
       "mean_concentration_percent": 15.2,
       "vector_url": "/data/ice/september-2018-outline.geojson"
     },
     {
       "year": 2019,
       "kind": "observed",
-      "url": "/data/ice/september-2019.png",
       "mean_concentration_percent": 10.6,
       "vector_url": "/data/ice/september-2019-outline.geojson"
     },
     {
       "year": 2020,
       "kind": "observed",
-      "url": "/data/ice/september-2020.png",
       "mean_concentration_percent": 12.6,
       "vector_url": "/data/ice/september-2020-outline.geojson"
     },
     {
       "year": 2021,
       "kind": "observed",
-      "url": "/data/ice/september-2021.png",
       "mean_concentration_percent": 13.6,
       "vector_url": "/data/ice/september-2021-outline.geojson"
     },
     {
       "year": 2022,
       "kind": "observed",
-      "url": "/data/ice/september-2022.png",
       "mean_concentration_percent": 11.3,
       "vector_url": "/data/ice/september-2022-outline.geojson"
     },
     {
       "year": 2023,
       "kind": "observed",
-      "url": "/data/ice/september-2023.png",
       "mean_concentration_percent": 6.6,
       "vector_url": "/data/ice/september-2023-outline.geojson"
     },
     {
       "year": 2024,
       "kind": "observed",
-      "url": "/data/ice/september-2024.png",
       "mean_concentration_percent": 6.2,
       "vector_url": "/data/ice/september-2024-outline.geojson"
     },
     {
       "year": 2025,
       "kind": "observed",
-      "url": "/data/ice/september-2025.png",
       "mean_concentration_percent": 8.5,
       "vector_url": "/data/ice/september-2025-outline.geojson"
     },
     {
       "year": 2026,
       "kind": "observed",
-      "url": "/data/ice/september-2026.png",
       "mean_concentration_percent": 9.7,
       "vector_url": "/data/ice/september-2026-outline.geojson"
     },
     {
       "year": 2035,
       "kind": "scenario",
-      "url": "/data/ice/september-2035-scenario.png",
       "mean_concentration_percent": 7.6,
       "vector_url": "/data/ice/september-2035-outline.geojson"
     },
     {
       "year": 2050,
       "kind": "scenario",
-      "url": "/data/ice/september-2050-scenario.png",
       "mean_concentration_percent": 6.4,
       "vector_url": "/data/ice/september-2050-outline.geojson"
     }

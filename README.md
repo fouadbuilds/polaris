@@ -111,7 +111,7 @@ source links; **Show & focus this route** fits its extent. Proposals are dashed 
 and mapped passage variants brown. Route access is not inferred from the selected ice year.
 
 Research and interpretation: [Canadian Arctic trade routes](research/arctic-trade-routes.md).
-Data: `frontend/public/data/routes-canada-v2.geojson`, automatically saved by the offline worker.
+Data: `frontend/public/data/routes-canada.geojson`, automatically saved by the offline worker.
 Rebuild with `backend/.venv/bin/python scripts/bake_routes.py` after preparing `world-land.geojson`.
 Waypoints and a coarse land mask make the drawing follow broad geography; no AIS, bathymetry, vessel,
 ice or commercial routing model is used. The road line is an endpoint sketch, not the actual alignment.
@@ -139,7 +139,7 @@ caches originals in `.cache/seaice/`, and records source URLs and SHA-256 hashes
 `scripts/vectorize_ice.py` to rebuild the GeoJSON display outlines. That script can be run separately when originals are cached.
 
 Source: [NOAA/NSIDC Sea Ice Index v4](https://nsidc.org/data/g02135/versions/4).
-The source grid is 25 km polar stereographic. Concentration PNGs remain as intermediate assets; the dashboard displays vectors.
+The source grid is 25 km polar stereographic. Only the vector display assets are shipped; cached original GeoTIFFs remain available for reproducible preparation.
 GeoTIFF values 0–1000 are divided by 10 for concentration percent; land, coastal and missing flags are excluded
 from the statistical fit. Display polygons outline cells at or above 15% concentration. They show extent, not concentration shading.
 For display, source land gaps are interpolated, outlines receive 18 km closing and 8 km opening and are simplified at 3 km,
@@ -178,3 +178,15 @@ pnpm run build
 - `frontend/src/components/` — focused UI components.
 
 Candidate locations and scores in this prototype are illustrative only and are not siting recommendations.
+
+### Map colors and satellite time presets
+
+Edit `frontend/src/map-colors.css` to change land, water, ice, port, label, and route colors. The variables apply to map shapes and legends without rebaking geographical data.
+
+Satellite mode shares the seasonal ice presets and year slider with the map, and retains a separate custom photograph date. Observed years from 2000 onwards use MODIS Terra imagery for the 15th of the selected month. The 1996 preset uses measured ice over a reference mosaic because MODIS Terra imagery begins in February 2000. Future presets show trend-scenario ice outlines over a reference mosaic, not future photographs. High-resolution Sentinel-2 port detail is enabled only for observed dates from March 2017 onwards.
+
+Route hover details appear in a compact fixed card that does not capture clicks. The study window can be clicked to focus without a hover tag; port markers render above route lines. The dashboard opens focused on Canada’s north. Route bends are rounded only where the display coastline allows it. These remain schematic corridors rather than navigation tracks.
+
+Each route now has an individual `--map-route-<route-id>` color in `frontend/src/map-colors.css`, matching its controls and clickable legend. Shared route segments render as parallel cables separated by 6 screen pixels, with white casing. Spacing is recalculated on zoom, and connections ease into shared sections. These are visual offsets only: source route coordinates remain unchanged. Proposed routes remain dashed.
+
+Route display uses screen-space Bézier bends, with staircase simplification before rounding. Click targets follow the visible curves. The source coastline-following route geometry is preserved; curves and cable offsets are presentation approximations. Legacy raster ice maps, duplicate manifests, and numbered route copies have been removed. The ice baking pipeline now produces only metrics, provenance, and the vector assets used by the dashboard.

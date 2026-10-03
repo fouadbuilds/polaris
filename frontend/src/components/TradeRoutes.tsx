@@ -1,5 +1,8 @@
-import { useEffect, useState } from 'react'
-import { Pane, Polyline, Tooltip } from 'react-leaflet'
+import { useEffect, useMemo, useState } from 'react'
+import { Pane, useMapEvents } from 'react-leaflet'
+import { point } from 'leaflet'
+import { bundleRoutes } from '../routeBundles'
+import { SmoothRoute } from './SmoothRoute'
 
 export interface TradeRoute {
   type: 'Feature'
@@ -10,7 +13,12 @@ export interface TradeRoute {
     sources: {title: string; url: string}[]; geometry_method: string
   }
 }
-const COLORS = {passage: '#8b3f22', used: '#08756b', proposed: '#7848ac'}
+const ROUTE_LABELS: Record<string, string> = {
+  'nwp-victoria': 'Victoria Strait', 'nwp-prince-wales': 'Prince of Wales', 'nwp-rae-simpson': 'Rae / Simpson',
+  'eastern-sealift': 'Eastern sealift', 'western-resupply': 'Western resupply', 'churchill-atlantic': 'Churchill exports',
+  'grays-west': 'Grays Bay · Pacific', 'grays-east': 'Grays Bay · Atlantic', 'grays-road': 'Grays Bay road',
+}
+export const routeColor = (id: string) => `var(--map-route-${id})`
 const DEFAULT_ROUTES = ['nwp-victoria', 'nwp-prince-wales']
 
 export function useTradeRoutes() {
@@ -21,7 +29,7 @@ export function useTradeRoutes() {
   const [selectedId, setSelectedId] = useState('nwp-victoria')
   useEffect(() => {
     const controller = new AbortController()
-    fetch('/data/routes-canada-v2.geojson', {signal: controller.signal})
+    fetch('/data/routes-canada.geojson?display=curves-4', {signal: controller.signal})
       .then(response => { if (!response.ok) throw new Error('Saved trade routes could not load.'); return response.json() })
       .then(data => { if (!controller.signal.aborted) setRoutes(data.features) })
       .catch(error => { if (!controller.signal.aborted) setError(error instanceof Error ? error.message : 'Trade routes unavailable.') })
@@ -38,18 +46,36 @@ export function useTradeRoutes() {
 }
 type RouteState = ReturnType<typeof useTradeRoutes>
 
-export function TradeRouteLayer({state, onSelect}: {state: RouteState; onSelect: (id: string) => void}) {
-  return <Pane name="trade-routes" style={{zIndex: 450}}>{state.show && state.routes.filter(route => state.enabled.includes(route.properties.id)).map(route => {
-    const properties = route.properties
-    const positions = route.geometry.coordinates.map(([lon, lat]) => [lat, lon] as [number, number])
-    return <Polyline key={properties.id} positions={positions} pathOptions={{
-      color: COLORS[properties.category], weight: properties.id === state.selectedId ? 4.5 : 2.8,
-      opacity: properties.id === state.selectedId ? 1 : 0.75,
-      dashArray: properties.category === 'proposed' ? properties.id === 'grays-road' ? '2 5' : '8 6' : undefined,
-    }} eventHandlers={{click: () => onSelect(properties.id)}}>
-      <Tooltip sticky><strong>{properties.name}</strong><br />{properties.status}<br />Schematic corridor</Tooltip>
-    </Polyline>
-  })}</Pane>
+export function TradeRouteLayer({state, onSelect, onHover}: {state: RouteState; onSelect: (id: string) => void; onHover: (id: string | null) => void}) {
+  const [zoomRevision, setZoomRevision] = useState(0)
+  const map = useMapEvents({zoomend: () => setZoomRevision(value => value + 1)})
+  const displayed = useMemo(() => {
+    const visible = state.routes.filter(route => state.enabled.includes(route.properties.id))
+    const lanes = bundleRoutes(visible.map(route => ({id: route.properties.id, coordinates: route.geometry.coordinates})),
+      ([lon, lat]) => map.project([lat, lon]), p => { const latlng = map.unproject(point(p.x, p.y)); return [latlng.lng, latlng.lat] })
+    return visible.map((route, i) => ({route, positions: lanes[i].coordinates.map(([lon, lat]) => [lat, lon] as [number, number])}))
+  }, [state.routes, state.enabled, map, zoomRevision])
+  return <Pane name="trade-routes" style={{zIndex: 450}}>{state.show && <>
+    {displayed.map(({route, positions}) => <SmoothRoute key={`${route.properties.id}-casing`} positions={positions} interactive={false}
+      options={{color: 'var(--map-route-casing)', weight: 5.5, opacity: 0.94, lineCap: 'round', lineJoin: 'round',
+        dashArray: route.properties.category === 'proposed' ? '9 7' : undefined}} />)}
+    {displayed.map(({route, positions}) => <SmoothRoute key={route.properties.id} positions={positions}
+      options={{color: routeColor(route.properties.id), weight: route.properties.id === state.selectedId ? 4 : 3.2, opacity: 1,
+        lineCap: 'round', lineJoin: 'round', className: 'route-cable',
+        dashArray: route.properties.category === 'proposed' ? route.properties.id === 'grays-road' ? '2 6' : '9 7' : undefined}}
+      onHover={hovered => onHover(hovered ? route.properties.id : null)} onClick={() => { onHover(null); onSelect(route.properties.id) }} />)}
+  </>}</Pane>
+}
+
+export function TradeRouteLegend({state}: {state: RouteState}) {
+  return <div className="route-cable-legend" aria-label="Visible trade routes">
+    {state.routes.filter(route => state.enabled.includes(route.properties.id)).map(route => <button key={route.properties.id}
+      title={route.properties.name} aria-pressed={route.properties.id === state.selectedId} onClick={() => state.setSelectedId(route.properties.id)}>
+      <i style={{borderColor: routeColor(route.properties.id), borderTopStyle: route.properties.category === 'proposed' ? 'dashed' : 'solid'}} />
+      {ROUTE_LABELS[route.properties.id] ?? route.properties.name}
+    </button>)}
+    <small>Parallel lines separate shared corridors for display.</small>
+  </div>
 }
 
 export function TradeRouteControls({state, onFocus}: {state: RouteState; onFocus: (route: TradeRoute) => void}) {
@@ -75,14 +101,14 @@ export function TradeRouteControls({state, onFocus}: {state: RouteState; onFocus
     </label>
     <details className="route-choices"><summary>Individual route visibility · {state.enabled.length} selected</summary>
     {(['passage', 'used', 'proposed'] as const).map(category => <div className="route-group" key={category}>
-      <h3><i style={{background: COLORS[category]}} />{{passage: 'Passage corridors', used: 'Used supply / export corridors', proposed: 'Proposed / conceptual connections'}[category]}</h3>
+      <h3>{{passage: 'Passage corridors', used: 'Used supply / export corridors', proposed: 'Proposed / conceptual connections'}[category]}</h3>
       {state.routes.filter(route => route.properties.category === category).map(route => <div className={`route-row ${route.properties.id === state.selectedId ? 'route-row--selected' : ''}`} key={route.properties.id}>
         <input aria-label={`Show ${route.properties.name}`} type="checkbox" checked={state.enabled.includes(route.properties.id)} onChange={() => state.toggle(route.properties.id)} />
-        <button aria-pressed={route.properties.id === state.selectedId} onClick={() => state.setSelectedId(route.properties.id)}>{route.properties.name}</button>
+        <i className="route-color-dot" style={{background: routeColor(route.properties.id)}} /><button aria-pressed={route.properties.id === state.selectedId} onClick={() => state.setSelectedId(route.properties.id)}>{route.properties.name}</button>
       </div>)}
     </div>)}</details>
     {selected && state.selected && <article className="route-detail" aria-label="Selected route evidence">
-      <span className="route-status" style={{color: COLORS[selected.category]}}>{selected.status}</span>
+      <span className="route-status" style={{color: routeColor(selected.id)}}>{selected.status}</span>
       <h2>{selected.name}</h2>
       <button className="route-focus" onClick={() => {
         state.setShow(true)
