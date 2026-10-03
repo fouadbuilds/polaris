@@ -3,6 +3,9 @@ import { createRoot } from 'react-dom/client'
 import 'leaflet/dist/leaflet.css'
 import './styles.css'
 import App from './App'
+import { startOfflineCache } from './offline'
+
+void startOfflineCache()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

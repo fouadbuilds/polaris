@@ -1,10 +1,13 @@
 """FastAPI application entry point."""
 
+from datetime import date
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.repositories.sites import get_sites
 from app.schemas import SitesResponse
+from app.imagery import imagery_service
 
 app = FastAPI(
     title="Polaris API",
@@ -33,3 +36,9 @@ def list_sites() -> SitesResponse:
     """Return candidate sites and the trends that explain their scores."""
 
     return get_sites()
+
+
+@app.get("/api/imagery/{site_id}")
+def site_imagery(site_id: str, date: date):
+    """Return a cached preview of the latest acquisition on/before the chosen date."""
+    return imagery_service.get(site_id, date)

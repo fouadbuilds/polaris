@@ -1,0 +1,432 @@
+{
+  "dataset": "NOAA/NSIDC Sea Ice Index, Version 4 (G02135)",
+  "source_url": "https://nsidc.org/data/g02135/versions/4",
+  "documentation_url": "https://nsidc.org/sites/default/files/documents/user-guide/g02135-v004-userguide.pdf",
+  "month": "March",
+  "bounds": [
+    [
+      56,
+      -150
+    ],
+    [
+      80,
+      -42
+    ]
+  ],
+  "native_resolution_km": 25,
+  "latest_observed_year": 2026,
+  "baseline_year": 1996,
+  "metric": "Unweighted mean concentration over a fixed set of ocean grid cells within 56\u201380\u00b0N, 150\u201342\u00b0W. This geographic window includes waters beyond Canada; it is not a national or shipping-route metric.",
+  "metric_ocean_cells": 8312,
+  "method": "Per-cell ordinary least-squares linear trend fitted to March observations from 1996\u20132024, extrapolated and clipped to 0\u2013100%. Values below 15% share the lowest display colour. A trend extrapolation, not a climate-model forecast; no calibrated probability or confidence interval.",
+  "holdout": {
+    "training": "1996\u20132019",
+    "validation": "2020\u20132024",
+    "mean_absolute_error_percentage_points": 2.8,
+    "ocean_cells": 8312,
+    "meaning": "Mean absolute per-cell error over withheld Septembers in this map window; does not quantify future uncertainty."
+  },
+  "limitations": [
+    "25 km grids cannot resolve many narrow Northwest Passage channels or port approaches.",
+    "Historical and recent concentration inputs change in January 2025 (GSFC to AMSR2); forecasts exclude 2025\u20132026 from fitting.",
+    "March monthly averages are not daily passage conditions. Below 15% concentration is not proof of open water.",
+    "Linear extrapolation omits future emissions, ice transport, feedbacks and physical constraints; skill may deteriorate with lead time.",
+    "All maps describe sea ice concentration, not thickness, glacier melt or navigability."
+  ],
+  "frames": [
+    {
+      "year": 1996,
+      "kind": "observed",
+      "url": "/data/ice/march-1996.png",
+      "mean_concentration_percent": 71.2,
+      "vector_url": "/data/ice/march-1996-outline.geojson"
+    },
+    {
+      "year": 1997,
+      "kind": "observed",
+      "url": "/data/ice/march-1997.png",
+      "mean_concentration_percent": 72.2,
+      "vector_url": "/data/ice/march-1997-outline.geojson"
+    },
+    {
+      "year": 1998,
+      "kind": "observed",
+      "url": "/data/ice/march-1998.png",
+      "mean_concentration_percent": 71.2,
+      "vector_url": "/data/ice/march-1998-outline.geojson"
+    },
+    {
+      "year": 1999,
+      "kind": "observed",
+      "url": "/data/ice/march-1999.png",
+      "mean_concentration_percent": 72.2,
+      "vector_url": "/data/ice/march-1999-outline.geojson"
+    },
+    {
+      "year": 2000,
+      "kind": "observed",
+      "url": "/data/ice/march-2000.png",
+      "mean_concentration_percent": 72.0,
+      "vector_url": "/data/ice/march-2000-outline.geojson"
+    },
+    {
+      "year": 2001,
+      "kind": "observed",
+      "url": "/data/ice/march-2001.png",
+      "mean_concentration_percent": 71.7,
+      "vector_url": "/data/ice/march-2001-outline.geojson"
+    },
+    {
+      "year": 2002,
+      "kind": "observed",
+      "url": "/data/ice/march-2002.png",
+      "mean_concentration_percent": 72.0,
+      "vector_url": "/data/ice/march-2002-outline.geojson"
+    },
+    {
+      "year": 2003,
+      "kind": "observed",
+      "url": "/data/ice/march-2003.png",
+      "mean_concentration_percent": 70.2,
+      "vector_url": "/data/ice/march-2003-outline.geojson"
+    },
+    {
+      "year": 2004,
+      "kind": "observed",
+      "url": "/data/ice/march-2004.png",
+      "mean_concentration_percent": 70.6,
+      "vector_url": "/data/ice/march-2004-outline.geojson"
+    },
+    {
+      "year": 2005,
+      "kind": "observed",
+      "url": "/data/ice/march-2005.png",
+      "mean_concentration_percent": 68.1,
+      "vector_url": "/data/ice/march-2005-outline.geojson"
+    },
+    {
+      "year": 2006,
+      "kind": "observed",
+      "url": "/data/ice/march-2006.png",
+      "mean_concentration_percent": 68.0,
+      "vector_url": "/data/ice/march-2006-outline.geojson"
+    },
+    {
+      "year": 2007,
+      "kind": "observed",
+      "url": "/data/ice/march-2007.png",
+      "mean_concentration_percent": 69.8,
+      "vector_url": "/data/ice/march-2007-outline.geojson"
+    },
+    {
+      "year": 2008,
+      "kind": "observed",
+      "url": "/data/ice/march-2008.png",
+      "mean_concentration_percent": 75.2,
+      "vector_url": "/data/ice/march-2008-outline.geojson"
+    },
+    {
+      "year": 2009,
+      "kind": "observed",
+      "url": "/data/ice/march-2009.png",
+      "mean_concentration_percent": 73.6,
+      "vector_url": "/data/ice/march-2009-outline.geojson"
+    },
+    {
+      "year": 2010,
+      "kind": "observed",
+      "url": "/data/ice/march-2010.png",
+      "mean_concentration_percent": 69.5,
+      "vector_url": "/data/ice/march-2010-outline.geojson"
+    },
+    {
+      "year": 2011,
+      "kind": "observed",
+      "url": "/data/ice/march-2011.png",
+      "mean_concentration_percent": 69.3,
+      "vector_url": "/data/ice/march-2011-outline.geojson"
+    },
+    {
+      "year": 2012,
+      "kind": "observed",
+      "url": "/data/ice/march-2012.png",
+      "mean_concentration_percent": 74.5,
+      "vector_url": "/data/ice/march-2012-outline.geojson"
+    },
+    {
+      "year": 2013,
+      "kind": "observed",
+      "url": "/data/ice/march-2013.png",
+      "mean_concentration_percent": 71.0,
+      "vector_url": "/data/ice/march-2013-outline.geojson"
+    },
+    {
+      "year": 2014,
+      "kind": "observed",
+      "url": "/data/ice/march-2014.png",
+      "mean_concentration_percent": 73.2,
+      "vector_url": "/data/ice/march-2014-outline.geojson"
+    },
+    {
+      "year": 2015,
+      "kind": "observed",
+      "url": "/data/ice/march-2015.png",
+      "mean_concentration_percent": 72.8,
+      "vector_url": "/data/ice/march-2015-outline.geojson"
+    },
+    {
+      "year": 2016,
+      "kind": "observed",
+      "url": "/data/ice/march-2016.png",
+      "mean_concentration_percent": 71.3,
+      "vector_url": "/data/ice/march-2016-outline.geojson"
+    },
+    {
+      "year": 2017,
+      "kind": "observed",
+      "url": "/data/ice/march-2017.png",
+      "mean_concentration_percent": 71.8,
+      "vector_url": "/data/ice/march-2017-outline.geojson"
+    },
+    {
+      "year": 2018,
+      "kind": "observed",
+      "url": "/data/ice/march-2018.png",
+      "mean_concentration_percent": 72.6,
+      "vector_url": "/data/ice/march-2018-outline.geojson"
+    },
+    {
+      "year": 2019,
+      "kind": "observed",
+      "url": "/data/ice/march-2019.png",
+      "mean_concentration_percent": 70.3,
+      "vector_url": "/data/ice/march-2019-outline.geojson"
+    },
+    {
+      "year": 2020,
+      "kind": "observed",
+      "url": "/data/ice/march-2020.png",
+      "mean_concentration_percent": 70.6,
+      "vector_url": "/data/ice/march-2020-outline.geojson"
+    },
+    {
+      "year": 2021,
+      "kind": "observed",
+      "url": "/data/ice/march-2021.png",
+      "mean_concentration_percent": 70.5,
+      "vector_url": "/data/ice/march-2021-outline.geojson"
+    },
+    {
+      "year": 2022,
+      "kind": "observed",
+      "url": "/data/ice/march-2022.png",
+      "mean_concentration_percent": 73.4,
+      "vector_url": "/data/ice/march-2022-outline.geojson"
+    },
+    {
+      "year": 2023,
+      "kind": "observed",
+      "url": "/data/ice/march-2023.png",
+      "mean_concentration_percent": 71.6,
+      "vector_url": "/data/ice/march-2023-outline.geojson"
+    },
+    {
+      "year": 2024,
+      "kind": "observed",
+      "url": "/data/ice/march-2024.png",
+      "mean_concentration_percent": 71.3,
+      "vector_url": "/data/ice/march-2024-outline.geojson"
+    },
+    {
+      "year": 2025,
+      "kind": "observed",
+      "url": "/data/ice/march-2025.png",
+      "mean_concentration_percent": 69.1,
+      "vector_url": "/data/ice/march-2025-outline.geojson"
+    },
+    {
+      "year": 2026,
+      "kind": "observed",
+      "url": "/data/ice/march-2026.png",
+      "mean_concentration_percent": 70.8,
+      "vector_url": "/data/ice/march-2026-outline.geojson"
+    },
+    {
+      "year": 2035,
+      "kind": "scenario",
+      "url": "/data/ice/march-2035-scenario.png",
+      "mean_concentration_percent": 71.8,
+      "vector_url": "/data/ice/march-2035-outline.geojson"
+    },
+    {
+      "year": 2050,
+      "kind": "scenario",
+      "url": "/data/ice/march-2050-scenario.png",
+      "mean_concentration_percent": 71.9,
+      "vector_url": "/data/ice/march-2050-outline.geojson"
+    }
+  ],
+  "sources": [
+    {
+      "year": 1996,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/03_Mar/N_199603_concentration_v4.0.tif",
+      "sha256": "d84cf9efeaf039a5351a770546dd8663a946387d8d90f34c66299f7f5387e6a9"
+    },
+    {
+      "year": 1997,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/03_Mar/N_199703_concentration_v4.0.tif",
+      "sha256": "6af826239b18da38c731a840f7e2219bfb4f1afee36b00a0d44a383fd9f572ab"
+    },
+    {
+      "year": 1998,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/03_Mar/N_199803_concentration_v4.0.tif",
+      "sha256": "7763046b8749210a7462710565849ed5008464ee14a93b77d5cc294bb57fd626"
+    },
+    {
+      "year": 1999,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/03_Mar/N_199903_concentration_v4.0.tif",
+      "sha256": "b8eada483ff802a3016326a23415de333925c1a47fd6ec4abf4efe0c1570ebfb"
+    },
+    {
+      "year": 2000,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/03_Mar/N_200003_concentration_v4.0.tif",
+      "sha256": "b04fbb8a85919a530ae5363987456a03a956ecffe39daf531b4e87dc9c6ab062"
+    },
+    {
+      "year": 2001,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/03_Mar/N_200103_concentration_v4.0.tif",
+      "sha256": "67c46020581e4ec5713803e88a0b25c6e681f1d4472599123ba0dd6430672f9b"
+    },
+    {
+      "year": 2002,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/03_Mar/N_200203_concentration_v4.0.tif",
+      "sha256": "053c49b29927fa26e457ecf02a297f7e502edaeac2b59224d999e0ae9d3fe4df"
+    },
+    {
+      "year": 2003,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/03_Mar/N_200303_concentration_v4.0.tif",
+      "sha256": "ba6db75c8dc8f815a6aeb38f554726503ea030efb2f86989247aad304b56569b"
+    },
+    {
+      "year": 2004,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/03_Mar/N_200403_concentration_v4.0.tif",
+      "sha256": "726f65691368043b563aa1607da2d004a12c60a8572c8074b02ecd7dfbbd7b82"
+    },
+    {
+      "year": 2005,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/03_Mar/N_200503_concentration_v4.0.tif",
+      "sha256": "0b31cd3050a52230bd99c2142a0d8819246e825bac6d0efec2de3052242b3508"
+    },
+    {
+      "year": 2006,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/03_Mar/N_200603_concentration_v4.0.tif",
+      "sha256": "a4173bb2c009aae0df43abf3fecfe9270d250350838986a5f1459824dc57986c"
+    },
+    {
+      "year": 2007,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/03_Mar/N_200703_concentration_v4.0.tif",
+      "sha256": "a4f1317a46b0106752decd9218d2bd003c278abc8184758526fb01d4a0c56698"
+    },
+    {
+      "year": 2008,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/03_Mar/N_200803_concentration_v4.0.tif",
+      "sha256": "9bf6b98341c9327ba1ffcdf9f56004ba0d0c9b2ac10785d766f2d689e67b7862"
+    },
+    {
+      "year": 2009,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/03_Mar/N_200903_concentration_v4.0.tif",
+      "sha256": "2ad96d767d4d989299562452775ef9d01b9ae665c84954cd22e71325bd732ce9"
+    },
+    {
+      "year": 2010,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/03_Mar/N_201003_concentration_v4.0.tif",
+      "sha256": "0b138eb7a6b5e0a2bda891d0c8d210024de6e3a7ff7a9044b6b03867c0b5ea90"
+    },
+    {
+      "year": 2011,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/03_Mar/N_201103_concentration_v4.0.tif",
+      "sha256": "4052afa0b798cbf7a028059227a0a99d63e4ebb55815fa1ae41243c9a933124a"
+    },
+    {
+      "year": 2012,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/03_Mar/N_201203_concentration_v4.0.tif",
+      "sha256": "4bd0c2fe0c82f057b9e17f81085dc76800a3c1bef203ff36d13e22c707b3b4f3"
+    },
+    {
+      "year": 2013,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/03_Mar/N_201303_concentration_v4.0.tif",
+      "sha256": "895270007c45fa966471efb2ded4a3acd7fb952c6460167217b92d5c2f1a3cec"
+    },
+    {
+      "year": 2014,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/03_Mar/N_201403_concentration_v4.0.tif",
+      "sha256": "6db38ca601f2dcc92a71867d89665a79625067c278e16c9719b5b97654e81270"
+    },
+    {
+      "year": 2015,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/03_Mar/N_201503_concentration_v4.0.tif",
+      "sha256": "042622d66e7b8d2227e411807ab6f7a823661cffebc39524fec8901c5d71d570"
+    },
+    {
+      "year": 2016,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/03_Mar/N_201603_concentration_v4.0.tif",
+      "sha256": "acd7644fe9887b48a89206ed38532012525c0ce74f43f1751ae434364dfd6b9b"
+    },
+    {
+      "year": 2017,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/03_Mar/N_201703_concentration_v4.0.tif",
+      "sha256": "aa13709a826d22a8e4c824b9589670efd89a3a33777cf824871bc2bd4512aab6"
+    },
+    {
+      "year": 2018,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/03_Mar/N_201803_concentration_v4.0.tif",
+      "sha256": "970fa128094b80abcaa919af589d2b9cce83a4c0878fbfcd46e487c1040eae1a"
+    },
+    {
+      "year": 2019,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/03_Mar/N_201903_concentration_v4.0.tif",
+      "sha256": "acabfe97b5c5f63aa0569d043b04cfe27caf91e792e8bd3cbed4c559e9601087"
+    },
+    {
+      "year": 2020,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/03_Mar/N_202003_concentration_v4.0.tif",
+      "sha256": "2748a26a8b4a67826e9829427159c439916258eb6526d8d9422424042015807c"
+    },
+    {
+      "year": 2021,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/03_Mar/N_202103_concentration_v4.0.tif",
+      "sha256": "ed2a36d4340df9114197afd3acf9255bc882fe1d1c921681d9debf9c5c5cbd36"
+    },
+    {
+      "year": 2022,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/03_Mar/N_202203_concentration_v4.0.tif",
+      "sha256": "9735fc479ba7f46f99ad1360ebef4e465092c3630310d68659f574431a434df4"
+    },
+    {
+      "year": 2023,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/03_Mar/N_202303_concentration_v4.0.tif",
+      "sha256": "11e1cfb9d973539ba612d96ce19cef11b146c4b8da7625642de593a5d1429b81"
+    },
+    {
+      "year": 2024,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/03_Mar/N_202403_concentration_v4.0.tif",
+      "sha256": "90aba710535bfed37a7f856456505eeeb082cb7250d1f24425a35f4162c88b7c"
+    },
+    {
+      "year": 2025,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/03_Mar/N_202503_concentration_v4.0.tif",
+      "sha256": "aaffe9b5e63c659e3bb12a2c2ae09ccbdba4bef6796bd19350ea761404c6ba8b"
+    },
+    {
+      "year": 2026,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/03_Mar/N_202603_concentration_v4.0.tif",
+      "sha256": "7a42aed5a145b5dafcab6906014b620b3c58884b5a5cbce8d2a9bf23e37c5a24"
+    }
+  ],
+  "display_method": "Display approximation of ice extent at >=15% concentration. Land gaps in the coarse grid are interpolated for display, then Natural Earth land polygons are subtracted. Boundaries are smoothed using 18 km closing and 8 km opening, simplified at 3 km. Small features may disappear. Statistics use original ocean cells; these outlines are not higher-resolution ice observations.",
+  "land_source": {
+    "url": "https://www.naturalearthdata.com/downloads/10m-physical-vectors/10m-land/",
+    "download_url": "https://naturalearth.s3.amazonaws.com/10m_physical/ne_10m_land.zip",
+    "sha256": "e547d749445eaa0964aba76738090ec88f5e63c4585122170f98c67a7ea922dc"
+  }
+}

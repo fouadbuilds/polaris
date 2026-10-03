@@ -1,93 +1,27 @@
 import { useEffect, useState } from 'react'
-
-import { ScoreBadge } from './components/ScoreBadge'
 import { SiteMap } from './components/SiteMap'
 import { SitePanel } from './components/SitePanel'
-import { TimelineControl } from './components/TimelineControl'
 import { useSites } from './hooks/useSites'
 
 export default function App() {
   const { data, error, isLoading, reload } = useSites()
   const [selectedSiteId, setSelectedSiteId] = useState<string | null>(null)
-  const [selectedYear, setSelectedYear] = useState<number | null>(null)
-  const rankedSites = data ? [...data.sites].sort((left, right) => right.durability_score - left.durability_score) : []
-  const timelineYears = data ? [...new Set(data.sites.flatMap((site) => site.trend_series.map((point) => point.year)))].sort((left, right) => left - right) : []
-  const activeYear = selectedYear ?? timelineYears.at(-1) ?? new Date().getFullYear()
-
-  useEffect(() => {
-    if (!selectedSiteId && rankedSites[0]) {
-      setSelectedSiteId(rankedSites[0].id)
-    }
-  }, [rankedSites, selectedSiteId])
-
-  const selectedSite = data?.sites.find((site) => site.id === selectedSiteId) ?? null
-
-  return (
-    <main>
-      <header className="app-header">
-        <div>
-          <p className="brand">POLARIS / NWP</p>
-          <h1>Where is melt becoming a durable infrastructure signal?</h1>
-        </div>
-        <p className="app-header__context">Operational evidence for long-horizon port planning—not live navigation advice.</p>
-      </header>
-      <section className="data-status" aria-label="Prototype data status">
-        <strong>Prototype data status</strong>
-        <span>Scores and trend series are fixtures while historical and RCM processing is built. Some RCM products are publicly released through Canada’s EODMS; the first site-specific scene is pending selection.</span>
-        <a href="https://www.asc-csa.gc.ca/eng/satellites/radarsat/access-to-data/" target="_blank" rel="noreferrer">RCM access details</a>
-      </section>
-      {timelineYears.length > 0 && <TimelineControl years={timelineYears} activeYear={activeYear} onYearChange={setSelectedYear} />}
-
-      <section className="workspace" aria-label="Port candidate comparison">
-        <div className="map-area">
-          {isLoading && <div className="map-status" role="status">Loading candidate trends…</div>}
-          {error && (
-            <div className="map-status map-status--error" role="alert">
-              <p>{error}</p>
-              <button type="button" onClick={() => reload()}>Try again</button>
-            </div>
-          )}
-          {data && data.sites.length === 0 && <div className="map-status" role="status">No candidate sites are available yet.</div>}
-          {data && data.sites.length > 0 && (
-            <SiteMap sites={rankedSites} selectedSiteId={selectedSiteId} onSelect={setSelectedSiteId} />
-          )}
-        </div>
-        <SitePanel site={selectedSite} activeYear={activeYear} />
-      </section>
-
-      {data && (
-        <section className="candidate-list" aria-labelledby="candidate-heading">
-          <div className="section-heading">
-            <div>
-              <p className="eyebrow">Comparison set</p>
-              <h2 id="candidate-heading">Ranked by durability</h2>
-            </div>
-            <p>Updated {new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' }).format(new Date(data.updated))}</p>
-          </div>
-          <div className="candidate-list__items">
-            {rankedSites.map((site, index) => (
-              <button
-                type="button"
-                key={site.id}
-                className={`candidate ${site.id === selectedSiteId ? 'candidate--selected' : ''}`}
-                onClick={() => setSelectedSiteId(site.id)}
-                aria-pressed={site.id === selectedSiteId}
-              >
-                <span>
-                  <small className="candidate__rank">Rank {String(index + 1).padStart(2, '0')}</small>
-                  <strong>{site.name}</strong>
-                  <small>{site.trend_summary}</small>
-                </span>
-                <ScoreBadge score={site.durability_score} />
-              </button>
-            ))}
-          </div>
-        </section>
-      )}
-
-      <footer>
-        This prototype is for comparing evidence, not navigation, safety, or a port-siting recommendation.
-      </footer>
-    </main>
-  )
+  const sites = data?.sites ?? []
+  useEffect(() => { if (!selectedSiteId && sites[0]) setSelectedSiteId(sites[0].id) }, [sites, selectedSiteId])
+  const selectedSite = sites.find(site => site.id === selectedSiteId) ?? null
+  const activeYear = selectedSite?.trend_series.at(-1)?.year ?? 2024
+  return <main className="dashboard">
+    <header className="app-header">
+      <div className="dashboard-brand"><span className="brand-mark">P</span><div><p className="brand">POLARIS</p><h1>Canadian Arctic observatory</h1></div></div>
+      <div className="header-context"><span className="status-dot" />1996–2026 observations <span className="header-divider">/</span> 2035 & 2050 scenarios</div>
+    </header>
+    <div className="data-status" aria-label="Data status"><span>NSIDC measured ice · future outlines are trend scenarios · port scores are illustrative</span><a href="https://nsidc.org/data/g02135/versions/4" target="_blank" rel="noreferrer">Data source ↗</a></div>
+    <section className="workspace" aria-label="Arctic map dashboard">
+      {isLoading && <div className="map-status" role="status">Loading dashboard…</div>}
+      {error && <div className="map-status map-status--error" role="alert"><p>{error}</p><button onClick={() => reload()}>Try again</button></div>}
+      {data && sites.length > 0 && <SiteMap sites={sites} selectedSiteId={selectedSiteId} onSelect={setSelectedSiteId}
+        inspector={<SitePanel site={selectedSite} activeYear={activeYear} />} />}
+      {data && sites.length === 0 && <div className="map-status">No port candidates available.</div>}
+    </section>
+  </main>
 }

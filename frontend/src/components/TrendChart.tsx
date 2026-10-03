@@ -26,8 +26,8 @@ export function TrendChart({ points, activeYear }: TrendChartProps) {
 
   return (
     <figure className="trend-chart">
-      <figcaption>Observed window through {activeYear}</figcaption>
-      <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Ice extent percentage over time">
+      <figcaption>Illustrative site trend · through {activeYear}</figcaption>
+      <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Illustrative fixture ice extent percentage over time">
         <line x1={padding.left} x2={width - padding.right} y1={padding.top} y2={padding.top} className="chart-grid" />
         <line x1={padding.left} x2={width - padding.right} y1={padding.top + chartHeight} y2={padding.top + chartHeight} className="chart-grid" />
         <text x="2" y={padding.top + 4} className="chart-label">{max}%</text>

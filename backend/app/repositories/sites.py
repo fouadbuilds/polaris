@@ -66,5 +66,18 @@ def get_sites() -> SitesResponse:
                 selection_rationale="Included because federal funding was announced for a marine and small-craft harbour intended to support local resupply and marine activity.",
                 selection_source_url="https://www.canada.ca/en/news/archive/2015/06/minister-aglukkaq-announces-funding-new-marine-facility-pond-inlet.html",
             ),
+            Site(
+                id="grays-bay",
+                name="Grays Bay Port",
+                # Approximate proposed wharf location, proposal Table 1.1 (2024).
+                lat=67 + 48 / 60 + 18.811 / 3600,
+                lon=-(110 + 52 / 60 + 15.306 / 3600),
+                project_status="Proposed port · environmental review",
+                trend_summary="Proposed deepwater port on the south shore of Coronation Gulf, linked to Jericho Station by a planned 230 km all-season road.",
+                current_rcm_note="A site-specific RCM scene has not yet been selected from released mission products.",
+                selection_rationale="Included as an actual proposed Arctic cargo port. The Nunavut Impact Review Board lists the Grays Bay Road and Port project in active review. The marker uses the approximate proposed wharf location in Table 1.1 of the August 2024 project proposal.",
+                selection_source_url="https://www.nirb.ca/portal/pdash.php?appid=125987",
+                location_source_url="https://new.reviewboard.ca/sites/default/files/project_document/240812-24xn038-project-proposal-ir1e.pdf",
+            ),
         ],
     )

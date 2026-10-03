@@ -21,12 +21,14 @@ class Site(BaseModel):
     name: str = Field(min_length=1, max_length=100)
     lat: float = Field(ge=-90, le=90)
     lon: float = Field(ge=-180, le=180)
-    durability_score: int = Field(ge=0, le=100)
+    durability_score: int | None = Field(default=None, ge=0, le=100)
     trend_summary: str = Field(min_length=1, max_length=280)
-    trend_series: list[TrendPoint] = Field(min_length=2)
+    trend_series: list[TrendPoint] = Field(default_factory=list)
     current_rcm_note: str = Field(min_length=1, max_length=280)
     selection_rationale: str = Field(min_length=1, max_length=360)
     selection_source_url: HttpUrl
+    project_status: str | None = Field(default=None, max_length=100)
+    location_source_url: HttpUrl | None = None
 
 
 class SitesResponse(BaseModel):
