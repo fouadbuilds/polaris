@@ -3,12 +3,16 @@ import { useEffect, useState } from 'react'
 import { ScoreBadge } from './components/ScoreBadge'
 import { SiteMap } from './components/SiteMap'
 import { SitePanel } from './components/SitePanel'
+import { TimelineControl } from './components/TimelineControl'
 import { useSites } from './hooks/useSites'
 
 export default function App() {
   const { data, error, isLoading, reload } = useSites()
   const [selectedSiteId, setSelectedSiteId] = useState<string | null>(null)
+  const [selectedYear, setSelectedYear] = useState<number | null>(null)
   const rankedSites = data ? [...data.sites].sort((left, right) => right.durability_score - left.durability_score) : []
+  const timelineYears = data ? [...new Set(data.sites.flatMap((site) => site.trend_series.map((point) => point.year)))].sort((left, right) => left - right) : []
+  const activeYear = selectedYear ?? timelineYears.at(-1) ?? new Date().getFullYear()
 
   useEffect(() => {
     if (!selectedSiteId && rankedSites[0]) {
@@ -25,13 +29,14 @@ export default function App() {
           <p className="brand">POLARIS / NWP</p>
           <h1>Where is melt becoming a durable infrastructure signal?</h1>
         </div>
-        <p className="app-header__context">Decision support for long-horizon port planning—not live navigation advice.</p>
+        <p className="app-header__context">Operational evidence for long-horizon port planning—not live navigation advice.</p>
       </header>
       <section className="data-status" aria-label="Prototype data status">
         <strong>Prototype data status</strong>
         <span>Scores and trend series are fixtures while historical and RCM processing is built. Some RCM products are publicly released through Canada’s EODMS; the first site-specific scene is pending selection.</span>
         <a href="https://www.asc-csa.gc.ca/eng/satellites/radarsat/access-to-data/" target="_blank" rel="noreferrer">RCM access details</a>
       </section>
+      {timelineYears.length > 0 && <TimelineControl years={timelineYears} activeYear={activeYear} onYearChange={setSelectedYear} />}
 
       <section className="workspace" aria-label="Port candidate comparison">
         <div className="map-area">
@@ -47,7 +52,7 @@ export default function App() {
             <SiteMap sites={rankedSites} selectedSiteId={selectedSiteId} onSelect={setSelectedSiteId} />
           )}
         </div>
-        <SitePanel site={selectedSite} />
+        <SitePanel site={selectedSite} activeYear={activeYear} />
       </section>
 
       {data && (

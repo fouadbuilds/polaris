@@ -2,21 +2,23 @@ import type { TrendPoint } from '../types'
 
 interface TrendChartProps {
   points: TrendPoint[]
+  activeYear: number
 }
 
 const width = 312
 const height = 136
 const padding = { top: 12, right: 12, bottom: 28, left: 28 }
 
-export function TrendChart({ points }: TrendChartProps) {
-  const values = points.map((point) => point.ice_extent_pct)
+export function TrendChart({ points, activeYear }: TrendChartProps) {
+  const visiblePoints = points.filter((point) => point.year <= activeYear)
+  const values = visiblePoints.map((point) => point.ice_extent_pct)
   const min = Math.max(0, Math.min(...values) - 10)
   const max = Math.min(100, Math.max(...values) + 10)
   const range = Math.max(1, max - min)
   const chartWidth = width - padding.left - padding.right
   const chartHeight = height - padding.top - padding.bottom
-  const coordinates = points.map((point, index) => {
-    const x = padding.left + (index / Math.max(1, points.length - 1)) * chartWidth
+  const coordinates = visiblePoints.map((point, index) => {
+    const x = padding.left + (index / Math.max(1, visiblePoints.length - 1)) * chartWidth
     const y = padding.top + ((max - point.ice_extent_pct) / range) * chartHeight
     return { x, y, ...point }
   })
@@ -24,7 +26,7 @@ export function TrendChart({ points }: TrendChartProps) {
 
   return (
     <figure className="trend-chart">
-      <figcaption>Illustrative seasonal ice extent</figcaption>
+      <figcaption>Observed window through {activeYear}</figcaption>
       <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Ice extent percentage over time">
         <line x1={padding.left} x2={width - padding.right} y1={padding.top} y2={padding.top} className="chart-grid" />
         <line x1={padding.left} x2={width - padding.right} y1={padding.top + chartHeight} y2={padding.top + chartHeight} className="chart-grid" />

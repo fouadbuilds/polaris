@@ -4,9 +4,10 @@ import type { Site } from '../types'
 
 interface SitePanelProps {
   site: Site | null
+  activeYear: number
 }
 
-export function SitePanel({ site }: SitePanelProps) {
+export function SitePanel({ site, activeYear }: SitePanelProps) {
   if (!site) {
     return (
       <aside className="site-panel site-panel--empty" aria-live="polite">
@@ -28,8 +29,8 @@ export function SitePanel({ site }: SitePanelProps) {
         <ScoreBadge score={site.durability_score} />
       </div>
       <p className="summary">{site.trend_summary}</p>
-      <p className="methodology-note"><strong>Score basis:</strong> direction of the long-term trend and year-to-year consistency. This prototype score is not a construction recommendation.</p>
-      <TrendChart points={site.trend_series} />
+      <p className="methodology-note"><strong>Full-record score basis:</strong> direction of the long-term trend and year-to-year consistency. This prototype score is not a construction recommendation.</p>
+      <TrendChart points={site.trend_series} activeYear={activeYear} />
       <div className="selection-rationale">
         <span>Why this candidate</span>
         <p>{site.selection_rationale}</p>
