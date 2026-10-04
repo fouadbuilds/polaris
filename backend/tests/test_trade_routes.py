@@ -10,7 +10,7 @@ DATA = json.loads((ROOT / 'frontend/public/data/routes-canada.geojson').read_tex
 
 def test_proposals_are_separated_from_used_logistics_and_have_sources():
     routes = DATA['features']
-    assert len({f['properties']['id'] for f in routes}) == 11
+    assert len({f['properties']['id'] for f in routes}) == 12
     assert {f['properties']['category'] for f in routes} == {'used', 'passage', 'proposed', 'team'}
     for feature in routes:
         details = feature['properties']
@@ -33,8 +33,14 @@ def test_marine_display_lines_do_not_cross_substantial_land_areas():
     for feature in DATA['features']:
         line = geometry.shape(feature['geometry'])
         assert line.is_valid
-        if feature['properties']['id'] == 'grays-road':
-            assert line.coords[0] == pytest.approx((-110.8709183, 67.8052253))
+        if feature['properties']['id'] in {'grays-road', 'grays-yellowknife'}:
+            if feature['properties']['id'] == 'grays-road':
+                assert line.coords[0] == pytest.approx((-110.8709183, 67.8052253))
+            else:
+                assert line.coords[0] == pytest.approx((-114.377, 62.454))
+                assert line.coords[-1] == pytest.approx((-110.8709183, 67.8052253))
+                assert (ROOT / 'frontend/public' / feature['properties']['presentation_source'].lstrip('/')).is_file()
+                assert 'presentation' in feature['properties']['summary']
         else:
             # Tiny shoreline crossings can arise from the 0.04° display mask;
             # this check catches gross geometry errors, not navigation safety.

@@ -1,7 +1,7 @@
 // Bump the data version whenever the baked geographical files change.
 const PREFIX = 'polaris-';
-const DATA = PREFIX + 'data-v17';
-const SHELL = PREFIX + 'shell-v19';
+const DATA = PREFIX + 'data-v18';
+const SHELL = PREFIX + 'shell-v20';
 const API = PREFIX + 'previews-v1';
 const TILES = PREFIX + 'satellite-tiles-v1';
 const tileHosts = new Set(['server.arcgisonline.com', 'gibs.earthdata.nasa.gov']);
@@ -77,7 +77,7 @@ self.addEventListener('fetch', event => {
 });
 
 async function warmData(apiUrl) {
-  const paths = ['/data/world-land.geojson', '/data/routes-canada.geojson?display=curves-5', '/data/sites.json'];
+  const paths = ['/data/world-land.geojson', '/data/routes-canada.geojson?display=curves-6', '/data/sites.json'];
   const projectionUrl = '/data/projections/manifest.json';
   const projectionResponse = await cached(new Request(new URL(projectionUrl, self.location.origin)), DATA);
   if (!projectionResponse.ok) throw new Error('Projection manifest unavailable');

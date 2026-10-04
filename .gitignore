@@ -131,3 +131,6 @@ lerna-debug.log*
 
 # pre-docs
 plan.md
+
+# Temporary presentation previews and working files
+/.presentation-work/

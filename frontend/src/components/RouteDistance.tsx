@@ -6,7 +6,7 @@ const number = (value: number) => Math.round(value).toLocaleString()
 
 export function RouteDistance({ route, routes }: { route: TradeRoute; routes: TradeRoute[] }) {
   const km = distanceKm(route.geometry.coordinates)
-  const road = route.properties.id === 'grays-road'
+  const road = ['grays-road', 'grays-yellowknife'].includes(route.properties.id)
   const [knots, setKnots] = useState('12')
   const [dailyCost, setDailyCost] = useState('')
   const [baseline, setBaseline] = useState('')
@@ -26,7 +26,7 @@ export function RouteDistance({ route, routes }: { route: TradeRoute; routes: Tr
   return <section className="route-distance" aria-label="Route distance and voyage comparison">
     <h3>{road ? 'Road distance' : 'Corridor distance'}</h3>
     <strong>{number(km)} km · {number(km / 1.609344)} miles{!road && ` · ${number(km / 1.852)} nautical miles`}</strong>
-    <p>{road ? 'Endpoint sketch; the proposed road alignment is approximately 230 km.' : 'Approximate schematic distance, not a surveyed sailing track.'}</p>
+    <p>{route.properties.id === 'grays-yellowknife' ? 'Approximate presentation sketch distance; the road alignment has not been surveyed in this map.' : road ? 'Endpoint sketch; the proposed road alignment is approximately 230 km.' : 'Approximate schematic distance, not a surveyed sailing track.'}</p>
     {!road && <details><summary>Compare travel time & operating cost</summary>
       <p>Use the same origin and destination. Inputs are assumptions; 12 knots is an editable example.</p>
       <label>Average sailing speed (knots)<input type="number" min="0.1" step="0.5" value={knots} onChange={event => setKnots(event.target.value)} /></label>

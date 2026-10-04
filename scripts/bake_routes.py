@@ -100,7 +100,7 @@ def coast_aligned_display(routes):
         raise ValueError(f'No display water connection between {start} and {finish}')
 
     for route in routes:
-        if route['properties']['id'] == 'grays-road':
+        if route['properties']['id'] in {'grays-road', 'grays-yellowknife'}:
             continue
         cells = [snap(point) for point in route['geometry']['coordinates']]
         path = []
@@ -213,7 +213,16 @@ def main():
                 ['Grays Bay port', 'Jericho Station'],
                 ['Environmental review, financing and construction.', 'Existing winter-road linkage does not equal a completed all-season route to southern Canada.'],
                 ['grays', 'proposal'], [GRAYS, [66.0068275, -111.4657294]]),
+        feature('grays-yellowknife', 'Yellowknife ↔ Port of Grays Bay · proposed all-season road', 'proposed',
+                'Suggested all-season road shown in the supplied presentation, connecting Yellowknife with Port of Grays Bay. The line follows the slide schematically; it is not a surveyed alignment or a completed road.',
+                'Potential overland supply and freight connection to the proposed port.',
+                'Suggested all-season connection; no opening date is established by the presentation.',
+                ['Yellowknife', 'Port of Grays Bay'],
+                ['The presentation provides a concept sketch, not an engineered alignment.', 'The broader Yellowknife connection is separate from the published approximately 230 km Grays Bay–Jericho road project.'],
+                ['grays', 'proposal'], [[62.454, -114.377], [62.85, -113.6], [63.5, -113.3], [64.15, -113.05], [64.65, -111.8], [64.9, -110.8], [65.35, -110.7], [65.85, -111.45], [66.4, -111.1], [67.1, -110.9], GRAYS]),
     ]
+    presentation_route = next(route for route in routes if route['properties']['id'] == 'grays-yellowknife')
+    presentation_route['properties']['presentation_source'] = '/data/yellowknife-grays-bay-presentation.png'
     coast_aligned_display(routes)
     output = {'type': 'FeatureCollection', 'metadata': {
         'title': 'Canadian Arctic trade and logistics corridors', 'researched_on': '2026-10-03',

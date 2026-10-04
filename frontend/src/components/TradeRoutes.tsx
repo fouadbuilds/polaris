@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Pane, useMapEvents } from 'react-leaflet'
+import { CircleMarker, Pane, Tooltip, useMapEvents } from 'react-leaflet'
 import { point } from 'leaflet'
 import { bundleRoutes } from '../routeBundles'
 import { SmoothRoute } from './SmoothRoute'
@@ -11,16 +11,16 @@ export interface TradeRoute {
   properties: {
     id: string; name: string; category: 'passage' | 'used' | 'proposed' | 'team'; status: string
     summary: string; cargo: string; season: string; waypoints: string[]; constraints: string[]
-    sources: {title: string; url: string}[]; geometry_method: string
+    sources: {title: string; url: string}[]; geometry_method: string; presentation_source?: string
   }
 }
 const ROUTE_LABELS: Record<string, string> = {
   'nwp-victoria': 'Victoria Strait', 'nwp-prince-wales': 'Prince of Wales', 'nwp-rae-simpson': 'Rae / Simpson',
   'eastern-sealift': 'Eastern sealift', 'western-resupply': 'Western resupply', 'churchill-atlantic': 'Churchill exports',
-  'grays-west': 'Grays Bay · Pacific', 'grays-east': 'Grays Bay · Atlantic', 'grays-road': 'Grays Bay road',
+  'grays-west': 'Grays Bay · Pacific', 'grays-east': 'Grays Bay · Atlantic', 'grays-road': 'Grays Bay road', 'grays-yellowknife': 'Yellowknife–Grays Bay · proposed road',
 }
 export const routeColor = (id: string) => `var(--map-route-${id})`
-const DEFAULT_ROUTES = ['eastern-sealift', 'western-resupply', 'churchill-atlantic']
+const DEFAULT_ROUTES = ['eastern-sealift', 'western-resupply', 'churchill-atlantic', 'grays-yellowknife']
 
 export function useTradeRoutes() {
   const [routes, setRoutes] = useState<TradeRoute[]>([])
@@ -30,7 +30,7 @@ export function useTradeRoutes() {
   const [selectedId, setSelectedId] = useState('eastern-sealift')
   useEffect(() => {
     const controller = new AbortController()
-    fetch('/data/routes-canada.geojson?display=curves-5', {signal: controller.signal})
+    fetch('/data/routes-canada.geojson?display=curves-6', {signal: controller.signal})
       .then(response => { if (!response.ok) throw new Error('Saved trade routes could not load.'); return response.json() })
       .then(data => { if (!controller.signal.aborted) setRoutes(data.features.filter((route: TradeRoute) => route.properties.category !== 'team')) })
       .catch(error => { if (!controller.signal.aborted) setError(error instanceof Error ? error.message : 'Trade routes unavailable.') })
@@ -59,12 +59,16 @@ export function TradeRouteLayer({state, onSelect}: {state: RouteState; onSelect:
   return <Pane name="trade-routes" style={{zIndex: 450}}>{state.show && <>
     {displayed.map(({route, positions}) => <SmoothRoute key={`${route.properties.id}-casing`} positions={positions} interactive={false}
       options={{color: 'var(--map-route-casing)', weight: 5.5, opacity: 0.94, lineCap: 'round', lineJoin: 'round',
-        dashArray: ['proposed', 'team'].includes(route.properties.category) ? '9 7' : undefined}} />)}
+        dashArray: ['proposed', 'team'].includes(route.properties.category) ? ['grays-road', 'grays-yellowknife'].includes(route.properties.id) ? '2 6' : '9 7' : undefined}} />)}
     {displayed.map(({route, positions}) => <SmoothRoute key={route.properties.id} positions={positions}
       options={{color: routeColor(route.properties.id), weight: route.properties.id === state.selectedId ? 4 : 3.2, opacity: 1,
         lineCap: 'round', lineJoin: 'round', className: 'route-cable',
-        dashArray: ['proposed', 'team'].includes(route.properties.category) ? route.properties.id === 'grays-road' ? '2 6' : '9 7' : undefined}}
+        dashArray: ['proposed', 'team'].includes(route.properties.category) ? ['grays-road', 'grays-yellowknife'].includes(route.properties.id) ? '2 6' : '9 7' : undefined}}
       tooltip={{name: route.properties.name, status: route.properties.status}} onClick={() => onSelect(route.properties.id)} />)}
+    {displayed.some(({route}) => route.properties.id === 'grays-yellowknife') && <CircleMarker center={[62.454, -114.377]} radius={7}
+      pathOptions={{color: '#ffffff', weight: 3, fillColor: routeColor('grays-yellowknife'), fillOpacity: 1}}>
+      <Tooltip permanent direction="left" offset={[-10, 0]} className="port-label">Yellowknife</Tooltip>
+    </CircleMarker>}
   </>}</Pane>
 }
 
@@ -83,7 +87,7 @@ export function TradeRouteControls({state, onFocus}: {state: RouteState; onFocus
   const selected = state.selected?.properties
   return <section className="trade-route-controls" aria-label="Canadian trade route controls">
     <p className="eyebrow">Canada & Northwest Passage</p>
-    <label className="layer-switch"><input type="checkbox" checked={state.show} onChange={event => state.setShow(event.target.checked)} /> Show shipping corridors</label>
+    <label className="layer-switch"><input type="checkbox" checked={state.show} onChange={event => state.setShow(event.target.checked)} /> Show routes & corridors</label>
     <div className="route-presets" aria-label="Route groups">
       <button onClick={() => state.preset('used')}>Operating supply & export networks</button>
       <button onClick={() => state.preset('proposed')}>Proposed infrastructure connections</button>
@@ -127,7 +131,8 @@ export function TradeRouteControls({state, onFocus}: {state: RouteState; onFocus
       <p className="route-waypoints">{selected.waypoints.join(' → ')}</p>
       <h3>What limits this corridor</h3>
       <ul>{selected.constraints.map(item => <li key={item}>{item}</li>)}</ul>
-      <h3>Research sources · checked 3 October 2026</h3>
+      {selected.presentation_source && <p><a href={selected.presentation_source} target="_blank" rel="noreferrer">Presentation reference · suggested all-season road ↗</a></p>}
+      <h3>{selected.presentation_source ? 'Related port project sources' : 'Research sources · checked 3 October 2026'}</h3>
       {selected.sources.map(source => <a key={source.url} href={source.url} target="_blank" rel="noreferrer">{source.title} ↗</a>)}
       <details><summary>How the line was drawn</summary><p>{selected.geometry_method}</p></details>
     </article>}
