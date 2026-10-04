@@ -7,7 +7,8 @@
   --map-ice: #64c5ec;
   --map-ice-outline: #176a9a;
   --map-study-outline: #597b85;
-  --map-port: #bd722c;
+  --map-port: #c65b14;
+  --map-port-team: #713bb3;
   --map-port-outline: #ffffff;
   /* Each cable has its own color, shared by the map and route controls. */
   --map-route-nwp-victoria: #e04b36;
@@ -37,8 +38,8 @@
   --map-ice: #ffffff;
   --map-ice-outline: #77a9c1;
   --map-study-outline: #6594aa;
-  --map-port: #b87951;
-  --map-port-outline: #fffdf8;
+  --map-port: #c65b14;
+  --map-port-outline: #ffffff;
   --map-route-nwp-victoria: #ce8278;
   --map-route-nwp-prince-wales: #648fb9;
   --map-route-nwp-rae-simpson: #9b82aa;
@@ -60,3 +61,6 @@
   --map-ice: #ffffff;
   --map-ice-outline: #dceaf1;
 }
+
+/* Projection polygons are white even over dated satellite imagery. */
+.map-shell--projection .ice-swatch { background: #ffffff; border-color: #77a9c1; }

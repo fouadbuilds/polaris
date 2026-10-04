@@ -1,0 +1,22 @@
+.comparison-launcher { border-bottom: 1px solid #dce5eb; padding-bottom: 18px; margin-bottom: 20px; }
+.comparison-launcher h3 { margin-top: 0; }
+.comparison-launcher button, .port-comparison button { min-height: 44px; padding: 10px 16px; border: 1px solid #b6ccd7; border-radius: 6px; background: #edf5f8; color: #153f53; font-weight: 650; }
+.port-comparison { width: min(1180px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); margin: auto; padding: 28px; border: 1px solid #b6ccd7; border-radius: 10px; color: #263b49; background: #f9fbfc; overflow: auto; }
+.port-comparison::backdrop { background: rgb(12 34 46 / .65); }
+.comparison-heading { display: flex; justify-content: space-between; align-items: start; gap: 20px; }
+.comparison-heading h2 { margin: 0; font-size: 28px; }
+.comparison-heading .eyebrow { margin-bottom: 8px; }
+.comparison-selectors { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 24px 0; }
+.comparison-selectors label { display: grid; gap: 8px; font-weight: 650; }
+.comparison-table-scroll { overflow-x: auto; }
+.port-comparison table { width: 100%; min-width: 700px; border-collapse: collapse; table-layout: fixed; font-size: 15px; line-height: 1.5; }
+.port-comparison caption { text-align: left; font-weight: 650; margin-bottom: 12px; }
+.port-comparison th, .port-comparison td { padding: 14px; border-bottom: 1px solid #dce5eb; text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+.port-comparison thead { background: #eaf2f6; }
+.port-comparison th:first-child { width: 19%; }
+.port-comparison td p { margin-bottom: 0; }
+.comparison-conclusion { margin-top: 24px; padding-top: 8px; border-top: 2px solid #157b98; }
+.comparison-conclusion h3 { font-size: 21px; }
+.comparison-limits { font-size: 14px; color: #496575; }
+.voyage-conclusion { padding-left: 12px; border-left: 3px solid #157b98; }
+@media (max-width: 600px) { .port-comparison { padding: 18px; } .comparison-selectors { grid-template-columns: 1fr; } .comparison-selectors select { font-size: 16px; } .comparison-heading h2 { font-size: 23px; } }

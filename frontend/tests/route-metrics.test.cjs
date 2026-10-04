@@ -16,6 +16,24 @@ test('distance handles equatorial degrees, repeated vertices and the date line',
 test('knots convert to nautical miles per hour and voyage days', () => {
   assert.equal(api.voyageDays(12 * 1.852 * 24, 12), 1);
 });
+test('distance advantage disappears at break-even and reverses with more delay', () => {
+  const dailyKm = 12 * 1.852 * 24;
+  const before = api.compareVoyages(10 * dailyKm, 15 * dailyKm, 12, 0, 2);
+  assert.equal(before.breakEvenDelay, 7);
+  assert.equal(before.savingDays, 7);
+  assert.equal(api.compareVoyages(10 * dailyKm, 15 * dailyKm, 12, 7, 2).savingDays, 0);
+  assert.equal(api.compareVoyages(10 * dailyKm, 15 * dailyKm, 12, 8, 2).savingDays, -1);
+});
+test('longer route and equal distances retain the correct comparison sign', () => {
+  const dailyKm = 12 * 1.852 * 24;
+  assert.equal(api.compareVoyages(15 * dailyKm, 10 * dailyKm, 12, 0, 0).breakEvenDelay, -5);
+  assert.equal(api.compareVoyages(dailyKm, dailyKm, 12, 1, 3).savingDays, 2);
+});
+test('comparison rejects missing, non-finite and physically invalid inputs', () => {
+  for (const args of [[0,100,12,0,0], [100,-1,12,0,0], [100,200,0,0,0], [100,200,12,-1,0], [100,200,12,0,-1], [100,Infinity,12,0,0], [100,200,NaN,0,0]]) {
+    assert.equal(api.compareVoyages(...args), null);
+  }
+});
 test('ruler follows a great circle at high latitudes and crosses the date line smoothly', () => {
   const arc = api.greatCirclePoints([-90, 70], [90, 70]);
   assert.ok(arc[32][1] > 89.99);

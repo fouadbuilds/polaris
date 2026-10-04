@@ -4,6 +4,16 @@ Polaris is a Canadian Arctic observatory for investigating ports, supply connect
 
 The dashboard combines observed regional ice, published ECCC / CMIP6 climate projections, sourced port evidence and schematic routes. The earlier experimental trend maps have been retired. Engineering feasibility, vessel-specific route access, opening dates and commercial profitability remain future work.
 
+## Rubric presentation and decision screening
+
+The revised deck and team run-through are in `deliverables/Polaris-team-presentation.pptx` and `deliverables/Polaris-step-by-step.md`. The sequence uses a 2–3 minute opener, a separate RCM evidence presenter and a final one-minute site demonstration. The RCM overview needs the team's actual scene and metadata before a scene-specific claim can be made.
+
+**Port details → Compare three ports** compares documented project status, supply connections, source evidence and unresolved requirements. Grays Bay, Churchill and Tuktoyaktuk are the initial infrastructure benchmarks, not interchangeable routes for the same shipment. No feasibility score is assigned.
+
+The voyage calculator now accepts extra days on both routes and shows the selected route's break-even delay. At an assumed 12 knots and zero alternative delay, the shorter Prince of Wales schematic loses its time advantage over the Victoria Strait schematic after approximately 1.11 extra days. Fuel use, emissions, vessel suitability and commercial profitability are not calculated.
+
+Read-only source verification: `backend/.venv/Scripts/python.exe scripts/verify_presentation_evidence.py` checks the cached September source hashes, fixed ocean-cell sample and two displayed regional means without downloading or rewriting data.
+
 ## Start on Windows
 
 Double-click **Start Polaris.cmd** in this folder. It uses Git Bash to run the canonical `Start Polaris.sh` launcher, starts the API and website, waits for both, and opens `http://127.0.0.1:5173/` in your default browser. Keep its window open; press **Ctrl+C** to stop the services it started. Healthy existing Polaris services are reused; unrelated applications occupying ports 8000 or 5173 produce an error.

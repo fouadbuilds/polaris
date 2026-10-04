@@ -1,7 +1,7 @@
 // Bump the data version whenever the baked geographical files change.
 const PREFIX = 'polaris-';
 const DATA = PREFIX + 'data-v17';
-const SHELL = PREFIX + 'shell-v17';
+const SHELL = PREFIX + 'shell-v18';
 const API = PREFIX + 'previews-v1';
 const TILES = PREFIX + 'satellite-tiles-v1';
 const tileHosts = new Set(['server.arcgisonline.com', 'gibs.earthdata.nasa.gov']);

@@ -127,7 +127,7 @@ export function SiteMap({ sites, selectedSiteId, onSelect, inspector }: SiteMapP
       if (!controller.signal.aborted) setError(err instanceof Error ? err.message : 'Unable to load satellite imagery.')
     } finally { if (!controller.signal.aborted) setLoading(false) }
   }
-  return <div className={`map-shell ${dateOpen || rulerActive || rulerPoints.length > 0 ? 'map-shell--tool-open' : ''} ${mapMode === 'ice' ? 'map-shell--simple' : referenceIce ? 'map-shell--reference' : ''}`} aria-label="World map with Canadian Arctic ice dashboard">
+  return <div className={`map-shell ${dateOpen || rulerActive || rulerPoints.length > 0 ? 'map-shell--tool-open' : ''} ${projectionActive ? 'map-shell--projection' : ''} ${mapMode === 'ice' ? 'map-shell--simple' : referenceIce ? 'map-shell--reference' : ''}`} aria-label="World map with Canadian Arctic ice dashboard">
     <aside className={`dashboard-controls ${panelOpen ? 'dashboard-controls--open' : ''}`} aria-label="Map control panel">
       <div className="panel-tabs">
         <button type="button" aria-pressed={panelTab === 'layers'} onClick={() => setPanelTab('layers')}>Layers & time</button>
@@ -242,7 +242,7 @@ export function SiteMap({ sites, selectedSiteId, onSelect, inspector }: SiteMapP
         {mapMode === 'ice' ? <><span className="map-colors"><i className="land-swatch" /> Land <i className="water-swatch" /> Water <i className="ice-swatch" /> Ice</span><span>{showIce ? 'Ice-covered area · ≥15% concentration' : 'Ice outlines hidden'}</span>
           <span>Ice data covers the dashed Canadian Arctic window.</span><span>Smoothed display · source resolution 25 km.</span></> : <><span>{zoom >= 3 ? !showDated ? `Reference mosaic · ${history.frame?.year} ice overlay` : `Arctic photograph: ${photoDate}` : 'Focus on Canada for dated Arctic imagery.'}</span><span>Global background: reference imagery.</span></>}
         </>}
-        <div className="legend-ports"><span><i className="port-swatch" /> Orange dots · current / published ports</span><span><i className="team-port-swatch" /> Purple dots · team port concepts</span><small>Hover or tap a port for details. Dots describe port status; shaded areas describe ice.</small></div>
+        <div className="legend-ports"><span><i className="port-swatch" /> Solid orange · current ports</span><span><i className="proposed-port-swatch" /> Orange rings · published port projects</span><span><i className="team-port-swatch" /> Solid purple · team port concepts</span><small>A dark outer ring marks the selected port. Hover or tap a port for details. Dots describe port status; shaded areas describe ice.</small></div>
         </div>}
       </div>
     </div>

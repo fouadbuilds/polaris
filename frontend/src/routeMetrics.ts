@@ -15,6 +15,17 @@ export function voyageDays(km: number, knots: number): number {
   return km / (knots * 1.852 * 24)
 }
 
+/** Assumption-based time comparison, using one average speed for both routes. */
+export function compareVoyages(selectedKm: number, alternativeKm: number, knots: number, selectedDelay: number, alternativeDelay: number) {
+  if (![selectedKm, alternativeKm, knots, selectedDelay, alternativeDelay].every(Number.isFinite)
+    || selectedKm <= 0 || alternativeKm <= 0 || knots <= 0 || selectedDelay < 0 || alternativeDelay < 0) return null
+  const selectedDays = voyageDays(selectedKm, knots) + selectedDelay
+  const alternativeDays = voyageDays(alternativeKm, knots) + alternativeDelay
+  // Negative values mean the selected route cannot tie with a non-negative delay.
+  const breakEvenDelay = alternativeDays - voyageDays(selectedKm, knots)
+  return { selectedDays, alternativeDays, savingDays: alternativeDays - selectedDays, breakEvenDelay }
+}
+
 /** Samples the shortest spherical arc, keeping longitude continuous at the date line. */
 export function greatCirclePoints(start: [number, number], end: [number, number], segments = 64): [number, number][] {
   const r = Math.PI / 180

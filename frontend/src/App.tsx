@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { SiteMap } from './components/SiteMap'
 import { SitePanel } from './components/SitePanel'
+import { PortComparison } from './components/PortComparison'
 import { useSites } from './hooks/useSites'
 import polarisMark from './assets/polaris-mark.png'
 
@@ -21,7 +22,7 @@ export default function App() {
       {isLoading && <div className="map-status" role="status">Loading dashboard…</div>}
       {error && <div className="map-status map-status--error" role="alert"><p>{error}</p><button onClick={() => reload()}>Try again</button></div>}
       {data && sites.length > 0 && <SiteMap sites={sites} selectedSiteId={selectedSiteId} onSelect={setSelectedSiteId}
-        inspector={<SitePanel site={selectedSite} activeYear={activeYear} />} />}
+        inspector={<><PortComparison sites={sites} onInspect={setSelectedSiteId} /><SitePanel site={selectedSite} activeYear={activeYear} /></>} />}
       {data && sites.length === 0 && <div className="map-status">No port candidates available.</div>}
     </section>
   </main>
