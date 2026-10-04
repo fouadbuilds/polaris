@@ -18,19 +18,11 @@
   "baseline_year": 1996,
   "metric": "Unweighted mean concentration over a fixed set of ocean grid cells within 56\u201380\u00b0N, 150\u201342\u00b0W. This geographic window includes waters beyond Canada; it is not a national or shipping-route metric.",
   "metric_ocean_cells": 8312,
-  "method": "Per-cell ordinary least-squares linear trend fitted to September observations from 1996\u20132024, extrapolated and clipped to 0\u2013100%. Display outlines use a 15% concentration threshold. A trend extrapolation, not a climate-model forecast; no calibrated probability or confidence interval.",
-  "holdout": {
-    "training": "1996\u20132019",
-    "validation": "2020\u20132024",
-    "mean_absolute_error_percentage_points": 3.9,
-    "ocean_cells": 8312,
-    "meaning": "Mean absolute per-cell error over withheld September observations in this map window; does not quantify future uncertainty."
-  },
+  "method": "Observed September monthly concentration from NOAA/NSIDC GeoTIFFs. Values 0\u20131000 are divided by 10; flagged cells are excluded. Regional means use the fixed valid ocean-cell mask. Display outlines use a 15% concentration threshold. No future ice is predicted.",
   "limitations": [
     "25 km grids cannot resolve many narrow Northwest Passage channels or port approaches.",
-    "Historical and recent concentration inputs change in January 2025 (GSFC to AMSR2); forecasts exclude 2025\u20132026 from fitting.",
+    "Historical and recent concentration inputs change in January 2025 (GSFC to AMSR2).",
     "September monthly averages are not daily passage conditions. Below 15% concentration is not proof of open water.",
-    "Linear extrapolation omits future emissions, ice transport, feedbacks and physical constraints; skill may deteriorate with lead time.",
     "All maps describe sea ice concentration, not thickness, glacier melt or navigability."
   ],
   "frames": [
@@ -219,18 +211,6 @@
       "kind": "observed",
       "mean_concentration_percent": 9.7,
       "vector_url": "/data/ice/september-2026-outline.geojson"
-    },
-    {
-      "year": 2035,
-      "kind": "scenario",
-      "mean_concentration_percent": 7.6,
-      "vector_url": "/data/ice/september-2035-outline.geojson"
-    },
-    {
-      "year": 2050,
-      "kind": "scenario",
-      "mean_concentration_percent": 6.4,
-      "vector_url": "/data/ice/september-2050-outline.geojson"
     }
   ],
   "sources": [

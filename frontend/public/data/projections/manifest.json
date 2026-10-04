@@ -1,0 +1,509 @@
+{
+  "provider": "Environment and Climate Change Canada",
+  "dataset": "CMIP6 multi-model sea-ice concentration ensemble",
+  "source_url": "https://climate-scenarios.canada.ca/?page=cmip6-scenarios",
+  "documentation_url": "https://climate-scenarios.canada.ca/?page=cmip6-technical-notes",
+  "grid_degrees": 1,
+  "units": "% of grid-cell area",
+  "scenarios": {
+    "ssp126": "SSP1-2.6 \u00b7 low emissions",
+    "ssp245": "SSP2-4.5 \u00b7 intermediate emissions",
+    "ssp585": "SSP5-8.5 \u00b7 very high emissions"
+  },
+  "periods": [
+    [
+      2031,
+      2040
+    ],
+    [
+      2041,
+      2060
+    ]
+  ],
+  "method": "For each calendar month and period, average ECCC monthly 25th, 50th and 75th percentile concentration fields over the listed years, retaining missing cells. Draw median \u226515% extent and a model-spread band where the averaged 25th and 75th percentile fields disagree on the 15% threshold. Subtract saved land for display. No trend extrapolation, smoothing or observational baseline is added.",
+  "spread_meaning": "Period averages of monthly grid-cell ensemble percentile fields. Not percentiles of period means, confidence intervals, or probabilities of ice-free shipping.",
+  "limitations": [
+    "1\u00b0 model grid cannot resolve narrow channels or port approaches.",
+    "Concentration is not thickness or navigability.",
+    "Future projections are conditional on emissions; individual years are not forecasts.",
+    "Blank or missing model cells are not predictions of open water."
+  ],
+  "sources": [
+    {
+      "scenario": "ssp126",
+      "percentile": 25,
+      "url": "https://climate-scenarios.canada.ca/tools/dd-cmip6/scen-gridded-data.pl?CMIP6variabletype=sea-ice&CMIP6Variable=siconc&CMIP6model=ensemble&CMIP6Percentile=25&CMIP6experiment=ssp126&CMIP6baseline=mean&CMIP6valuetype=actual&CMIP6timeofyear=monthly&CMIP6timeperiod=2015-2100&action=GetNetCDFFile",
+      "filename": "ssp126-p25.nc",
+      "sha256": "d2f0e3f949e3ac82ece086a2c75c6675addb1b75a555d852d84c94c0c9c741a0",
+      "variable_attributes": {
+        "standard_name": "sea_ice_area_fraction",
+        "long_name": "Sea Ice Area Fraction (Ocean Grid)",
+        "units": "%",
+        "comment": "Area fraction of grid cell covered by sea ice",
+        "original_name": "CN",
+        "cell_methods": "area: mean where sea time: mean (interval: 30 minutes)",
+        "cell_measures": "area: areacello",
+        "history": "2020-02-19T02:03:05Z altered by CMOR: Treated scalar dimension: 'type'."
+      },
+      "dataset_attributes": {
+        "activity_id": "ScenarioMIP",
+        "mip_era": "CMIP6",
+        "experiment_id": "ssp126",
+        "frequency": "mon",
+        "table_id": "SImon",
+        "realm": "seaIce",
+        "parent_time_units": "days since 1850-1-1 00:00:00",
+        "variant_label": "r1i1p1f1",
+        "resolution": "1x1 deg",
+        "variable_id": "siconc",
+        "ensemble_type": "ensemble 25th percentile",
+        "institution": "Environment and Climate Change Canada (ECCC)",
+        "creation_date": "August-12-2024",
+        "CDO": "Climate Data Operators version 2.0.3 (https://mpimet.mpg.de/cdo)",
+        "NCO": "netCDF Operators version 5.0.5 (Homepage = http://nco.sf.net, Code = http://github.com/nco/nco)"
+      }
+    },
+    {
+      "scenario": "ssp126",
+      "percentile": 50,
+      "url": "https://climate-scenarios.canada.ca/tools/dd-cmip6/scen-gridded-data.pl?CMIP6variabletype=sea-ice&CMIP6Variable=siconc&CMIP6model=ensemble&CMIP6Percentile=50&CMIP6experiment=ssp126&CMIP6baseline=mean&CMIP6valuetype=actual&CMIP6timeofyear=monthly&CMIP6timeperiod=2015-2100&action=GetNetCDFFile",
+      "filename": "ssp126-p50.nc",
+      "sha256": "9e4a8b72dc1e3cfefa54e98877c6ce112f59c054566c05fd5470fbae896b7f75",
+      "variable_attributes": {
+        "standard_name": "sea_ice_area_fraction",
+        "long_name": "Sea Ice Area Fraction (Ocean Grid)",
+        "units": "%",
+        "comment": "Area fraction of grid cell covered by sea ice",
+        "original_name": "CN",
+        "cell_methods": "area: mean where sea time: mean (interval: 30 minutes)",
+        "cell_measures": "area: areacello",
+        "history": "2020-02-19T02:03:05Z altered by CMOR: Treated scalar dimension: 'type'."
+      },
+      "dataset_attributes": {
+        "activity_id": "ScenarioMIP",
+        "mip_era": "CMIP6",
+        "experiment_id": "ssp126",
+        "frequency": "mon",
+        "table_id": "SImon",
+        "realm": "seaIce",
+        "parent_time_units": "days since 1850-1-1 00:00:00",
+        "variant_label": "r1i1p1f1",
+        "resolution": "1x1 deg",
+        "variable_id": "siconc",
+        "ensemble_type": "ensemble 50th percentile",
+        "institution": "Environment and Climate Change Canada (ECCC)",
+        "creation_date": "August-12-2024",
+        "CDO": "Climate Data Operators version 2.0.3 (https://mpimet.mpg.de/cdo)",
+        "NCO": "netCDF Operators version 5.0.5 (Homepage = http://nco.sf.net, Code = http://github.com/nco/nco)"
+      }
+    },
+    {
+      "scenario": "ssp126",
+      "percentile": 75,
+      "url": "https://climate-scenarios.canada.ca/tools/dd-cmip6/scen-gridded-data.pl?CMIP6variabletype=sea-ice&CMIP6Variable=siconc&CMIP6model=ensemble&CMIP6Percentile=75&CMIP6experiment=ssp126&CMIP6baseline=mean&CMIP6valuetype=actual&CMIP6timeofyear=monthly&CMIP6timeperiod=2015-2100&action=GetNetCDFFile",
+      "filename": "ssp126-p75.nc",
+      "sha256": "24081a7995c947c0fa9af56b63755097eeaf438e23f6193288901f6a97687dc7",
+      "variable_attributes": {
+        "standard_name": "sea_ice_area_fraction",
+        "long_name": "Sea Ice Area Fraction (Ocean Grid)",
+        "units": "%",
+        "comment": "Area fraction of grid cell covered by sea ice",
+        "original_name": "CN",
+        "cell_methods": "area: mean where sea time: mean (interval: 30 minutes)",
+        "cell_measures": "area: areacello",
+        "history": "2020-02-19T02:03:05Z altered by CMOR: Treated scalar dimension: 'type'."
+      },
+      "dataset_attributes": {
+        "activity_id": "ScenarioMIP",
+        "mip_era": "CMIP6",
+        "experiment_id": "ssp126",
+        "frequency": "mon",
+        "table_id": "SImon",
+        "realm": "seaIce",
+        "parent_time_units": "days since 1850-1-1 00:00:00",
+        "variant_label": "r1i1p1f1",
+        "resolution": "1x1 deg",
+        "variable_id": "siconc",
+        "ensemble_type": "ensemble 75th percentile",
+        "institution": "Environment and Climate Change Canada (ECCC)",
+        "creation_date": "August-12-2024",
+        "CDO": "Climate Data Operators version 2.0.3 (https://mpimet.mpg.de/cdo)",
+        "NCO": "netCDF Operators version 5.0.5 (Homepage = http://nco.sf.net, Code = http://github.com/nco/nco)"
+      }
+    },
+    {
+      "scenario": "ssp245",
+      "percentile": 25,
+      "url": "https://climate-scenarios.canada.ca/tools/dd-cmip6/scen-gridded-data.pl?CMIP6variabletype=sea-ice&CMIP6Variable=siconc&CMIP6model=ensemble&CMIP6Percentile=25&CMIP6experiment=ssp245&CMIP6baseline=mean&CMIP6valuetype=actual&CMIP6timeofyear=monthly&CMIP6timeperiod=2015-2100&action=GetNetCDFFile",
+      "filename": "ssp245-p25.nc",
+      "sha256": "fd7aa8d52e65c7c174327bdb636ee9b3cb80afc77bdcecda2b4419c81e4cd24d",
+      "variable_attributes": {
+        "standard_name": "sea_ice_area_fraction",
+        "long_name": "Sea Ice Area Fraction (Ocean Grid)",
+        "units": "%",
+        "comment": "Area fraction of grid cell covered by sea ice",
+        "original_name": "CN",
+        "cell_methods": "area: mean where sea time: mean (interval: 30 minutes)",
+        "cell_measures": "area: areacello",
+        "history": "2020-02-19T02:16:27Z altered by CMOR: Treated scalar dimension: 'type'."
+      },
+      "dataset_attributes": {
+        "activity_id": "ScenarioMIP",
+        "mip_era": "CMIP6",
+        "experiment_id": "ssp245",
+        "frequency": "mon",
+        "table_id": "SImon",
+        "realm": "seaIce",
+        "parent_time_units": "days since 1850-1-1 00:00:00",
+        "variant_label": "r1i1p1f1",
+        "resolution": "1x1 deg",
+        "variable_id": "siconc",
+        "ensemble_type": "ensemble 25th percentile",
+        "institution": "Environment and Climate Change Canada (ECCC)",
+        "creation_date": "August-12-2024",
+        "CDO": "Climate Data Operators version 2.0.3 (https://mpimet.mpg.de/cdo)",
+        "NCO": "netCDF Operators version 5.0.5 (Homepage = http://nco.sf.net, Code = http://github.com/nco/nco)"
+      }
+    },
+    {
+      "scenario": "ssp245",
+      "percentile": 50,
+      "url": "https://climate-scenarios.canada.ca/tools/dd-cmip6/scen-gridded-data.pl?CMIP6variabletype=sea-ice&CMIP6Variable=siconc&CMIP6model=ensemble&CMIP6Percentile=50&CMIP6experiment=ssp245&CMIP6baseline=mean&CMIP6valuetype=actual&CMIP6timeofyear=monthly&CMIP6timeperiod=2015-2100&action=GetNetCDFFile",
+      "filename": "ssp245-p50.nc",
+      "sha256": "6bd4a0d7b91834a2e9db4d6fd4958bbd7dae0ce82150b11d47c26b1dab2c86d6",
+      "variable_attributes": {
+        "standard_name": "sea_ice_area_fraction",
+        "long_name": "Sea Ice Area Fraction (Ocean Grid)",
+        "units": "%",
+        "comment": "Area fraction of grid cell covered by sea ice",
+        "original_name": "CN",
+        "cell_methods": "area: mean where sea time: mean (interval: 30 minutes)",
+        "cell_measures": "area: areacello",
+        "history": "2020-02-19T02:16:27Z altered by CMOR: Treated scalar dimension: 'type'."
+      },
+      "dataset_attributes": {
+        "activity_id": "ScenarioMIP",
+        "mip_era": "CMIP6",
+        "experiment_id": "ssp245",
+        "frequency": "mon",
+        "table_id": "SImon",
+        "realm": "seaIce",
+        "parent_time_units": "days since 1850-1-1 00:00:00",
+        "variant_label": "r1i1p1f1",
+        "resolution": "1x1 deg",
+        "variable_id": "siconc",
+        "ensemble_type": "ensemble 50th percentile",
+        "institution": "Environment and Climate Change Canada (ECCC)",
+        "creation_date": "August-12-2024",
+        "CDO": "Climate Data Operators version 2.0.3 (https://mpimet.mpg.de/cdo)",
+        "NCO": "netCDF Operators version 5.0.5 (Homepage = http://nco.sf.net, Code = http://github.com/nco/nco)"
+      }
+    },
+    {
+      "scenario": "ssp245",
+      "percentile": 75,
+      "url": "https://climate-scenarios.canada.ca/tools/dd-cmip6/scen-gridded-data.pl?CMIP6variabletype=sea-ice&CMIP6Variable=siconc&CMIP6model=ensemble&CMIP6Percentile=75&CMIP6experiment=ssp245&CMIP6baseline=mean&CMIP6valuetype=actual&CMIP6timeofyear=monthly&CMIP6timeperiod=2015-2100&action=GetNetCDFFile",
+      "filename": "ssp245-p75.nc",
+      "sha256": "87109a7088687873c2cc1fed7203710077724f0ee36f86674fab33228d1e4e31",
+      "variable_attributes": {
+        "standard_name": "sea_ice_area_fraction",
+        "long_name": "Sea Ice Area Fraction (Ocean Grid)",
+        "units": "%",
+        "comment": "Area fraction of grid cell covered by sea ice",
+        "original_name": "CN",
+        "cell_methods": "area: mean where sea time: mean (interval: 30 minutes)",
+        "cell_measures": "area: areacello",
+        "history": "2020-02-19T02:16:27Z altered by CMOR: Treated scalar dimension: 'type'."
+      },
+      "dataset_attributes": {
+        "activity_id": "ScenarioMIP",
+        "mip_era": "CMIP6",
+        "experiment_id": "ssp245",
+        "frequency": "mon",
+        "table_id": "SImon",
+        "realm": "seaIce",
+        "parent_time_units": "days since 1850-1-1 00:00:00",
+        "variant_label": "r1i1p1f1",
+        "resolution": "1x1 deg",
+        "variable_id": "siconc",
+        "ensemble_type": "ensemble 75th percentile",
+        "institution": "Environment and Climate Change Canada (ECCC)",
+        "creation_date": "August-12-2024",
+        "CDO": "Climate Data Operators version 2.0.3 (https://mpimet.mpg.de/cdo)",
+        "NCO": "netCDF Operators version 5.0.5 (Homepage = http://nco.sf.net, Code = http://github.com/nco/nco)"
+      }
+    },
+    {
+      "scenario": "ssp585",
+      "percentile": 25,
+      "url": "https://climate-scenarios.canada.ca/tools/dd-cmip6/scen-gridded-data.pl?CMIP6variabletype=sea-ice&CMIP6Variable=siconc&CMIP6model=ensemble&CMIP6Percentile=25&CMIP6experiment=ssp585&CMIP6baseline=mean&CMIP6valuetype=actual&CMIP6timeofyear=monthly&CMIP6timeperiod=2015-2100&action=GetNetCDFFile",
+      "filename": "ssp585-p25.nc",
+      "sha256": "afcf17d1cc6a66a59affffcd662b4cc16137051d1e03f6818b07e36f3f3ff9b7",
+      "variable_attributes": {
+        "standard_name": "sea_ice_area_fraction",
+        "long_name": "Sea Ice Area Fraction (Ocean Grid)",
+        "units": "%",
+        "comment": "Area fraction of grid cell covered by sea ice",
+        "original_name": "CN",
+        "cell_methods": "area: mean where sea time: mean (interval: 30 minutes)",
+        "cell_measures": "area: areacello",
+        "history": "2020-02-19T02:27:55Z altered by CMOR: Treated scalar dimension: 'type'."
+      },
+      "dataset_attributes": {
+        "activity_id": "ScenarioMIP",
+        "mip_era": "CMIP6",
+        "experiment_id": "ssp585",
+        "frequency": "mon",
+        "table_id": "SImon",
+        "realm": "seaIce",
+        "parent_time_units": "days since 1850-1-1 00:00:00",
+        "variant_label": "r1i1p1f1",
+        "resolution": "1x1 deg",
+        "variable_id": "siconc",
+        "ensemble_type": "ensemble 25th percentile",
+        "institution": "Environment and Climate Change Canada (ECCC)",
+        "creation_date": "August-12-2024",
+        "CDO": "Climate Data Operators version 2.0.3 (https://mpimet.mpg.de/cdo)",
+        "NCO": "netCDF Operators version 5.0.5 (Homepage = http://nco.sf.net, Code = http://github.com/nco/nco)"
+      }
+    },
+    {
+      "scenario": "ssp585",
+      "percentile": 50,
+      "url": "https://climate-scenarios.canada.ca/tools/dd-cmip6/scen-gridded-data.pl?CMIP6variabletype=sea-ice&CMIP6Variable=siconc&CMIP6model=ensemble&CMIP6Percentile=50&CMIP6experiment=ssp585&CMIP6baseline=mean&CMIP6valuetype=actual&CMIP6timeofyear=monthly&CMIP6timeperiod=2015-2100&action=GetNetCDFFile",
+      "filename": "ssp585-p50.nc",
+      "sha256": "33ca32d1a07c68cdc8176716bed315c9dc1795e6ca5603d039c50c083bf9da13",
+      "variable_attributes": {
+        "standard_name": "sea_ice_area_fraction",
+        "long_name": "Sea Ice Area Fraction (Ocean Grid)",
+        "units": "%",
+        "comment": "Area fraction of grid cell covered by sea ice",
+        "original_name": "CN",
+        "cell_methods": "area: mean where sea time: mean (interval: 30 minutes)",
+        "cell_measures": "area: areacello",
+        "history": "2020-02-19T02:27:55Z altered by CMOR: Treated scalar dimension: 'type'."
+      },
+      "dataset_attributes": {
+        "activity_id": "ScenarioMIP",
+        "mip_era": "CMIP6",
+        "experiment_id": "ssp585",
+        "frequency": "mon",
+        "table_id": "SImon",
+        "realm": "seaIce",
+        "parent_time_units": "days since 1850-1-1 00:00:00",
+        "variant_label": "r1i1p1f1",
+        "resolution": "1x1 deg",
+        "variable_id": "siconc",
+        "ensemble_type": "ensemble 50th percentile",
+        "institution": "Environment and Climate Change Canada (ECCC)",
+        "creation_date": "August-12-2024",
+        "CDO": "Climate Data Operators version 2.0.3 (https://mpimet.mpg.de/cdo)",
+        "NCO": "netCDF Operators version 5.0.5 (Homepage = http://nco.sf.net, Code = http://github.com/nco/nco)"
+      }
+    },
+    {
+      "scenario": "ssp585",
+      "percentile": 75,
+      "url": "https://climate-scenarios.canada.ca/tools/dd-cmip6/scen-gridded-data.pl?CMIP6variabletype=sea-ice&CMIP6Variable=siconc&CMIP6model=ensemble&CMIP6Percentile=75&CMIP6experiment=ssp585&CMIP6baseline=mean&CMIP6valuetype=actual&CMIP6timeofyear=monthly&CMIP6timeperiod=2015-2100&action=GetNetCDFFile",
+      "filename": "ssp585-p75.nc",
+      "sha256": "1dab39490a1e783de1b1a2b69bc36472b0ba717deb82e96919f5b9952c511ae2",
+      "variable_attributes": {
+        "standard_name": "sea_ice_area_fraction",
+        "long_name": "Sea Ice Area Fraction (Ocean Grid)",
+        "units": "%",
+        "comment": "Area fraction of grid cell covered by sea ice",
+        "original_name": "CN",
+        "cell_methods": "area: mean where sea time: mean (interval: 30 minutes)",
+        "cell_measures": "area: areacello",
+        "history": "2020-02-19T02:27:55Z altered by CMOR: Treated scalar dimension: 'type'."
+      },
+      "dataset_attributes": {
+        "activity_id": "ScenarioMIP",
+        "mip_era": "CMIP6",
+        "experiment_id": "ssp585",
+        "frequency": "mon",
+        "table_id": "SImon",
+        "realm": "seaIce",
+        "parent_time_units": "days since 1850-1-1 00:00:00",
+        "variant_label": "r1i1p1f1",
+        "resolution": "1x1 deg",
+        "variable_id": "siconc",
+        "ensemble_type": "ensemble 75th percentile",
+        "institution": "Environment and Climate Change Canada (ECCC)",
+        "creation_date": "August-12-2024",
+        "CDO": "Climate Data Operators version 2.0.3 (https://mpimet.mpg.de/cdo)",
+        "NCO": "netCDF Operators version 5.0.5 (Homepage = http://nco.sf.net, Code = http://github.com/nco/nco)"
+      }
+    }
+  ],
+  "frames": [
+    {
+      "scenario": "ssp126",
+      "month": "march",
+      "start_year": 2031,
+      "end_year": 2040,
+      "vector_url": "/data/projections/ssp126-march-2031-2040.geojson"
+    },
+    {
+      "scenario": "ssp126",
+      "month": "march",
+      "start_year": 2041,
+      "end_year": 2060,
+      "vector_url": "/data/projections/ssp126-march-2041-2060.geojson"
+    },
+    {
+      "scenario": "ssp126",
+      "month": "july",
+      "start_year": 2031,
+      "end_year": 2040,
+      "vector_url": "/data/projections/ssp126-july-2031-2040.geojson"
+    },
+    {
+      "scenario": "ssp126",
+      "month": "july",
+      "start_year": 2041,
+      "end_year": 2060,
+      "vector_url": "/data/projections/ssp126-july-2041-2060.geojson"
+    },
+    {
+      "scenario": "ssp126",
+      "month": "september",
+      "start_year": 2031,
+      "end_year": 2040,
+      "vector_url": "/data/projections/ssp126-september-2031-2040.geojson"
+    },
+    {
+      "scenario": "ssp126",
+      "month": "september",
+      "start_year": 2041,
+      "end_year": 2060,
+      "vector_url": "/data/projections/ssp126-september-2041-2060.geojson"
+    },
+    {
+      "scenario": "ssp126",
+      "month": "october",
+      "start_year": 2031,
+      "end_year": 2040,
+      "vector_url": "/data/projections/ssp126-october-2031-2040.geojson"
+    },
+    {
+      "scenario": "ssp126",
+      "month": "october",
+      "start_year": 2041,
+      "end_year": 2060,
+      "vector_url": "/data/projections/ssp126-october-2041-2060.geojson"
+    },
+    {
+      "scenario": "ssp245",
+      "month": "march",
+      "start_year": 2031,
+      "end_year": 2040,
+      "vector_url": "/data/projections/ssp245-march-2031-2040.geojson"
+    },
+    {
+      "scenario": "ssp245",
+      "month": "march",
+      "start_year": 2041,
+      "end_year": 2060,
+      "vector_url": "/data/projections/ssp245-march-2041-2060.geojson"
+    },
+    {
+      "scenario": "ssp245",
+      "month": "july",
+      "start_year": 2031,
+      "end_year": 2040,
+      "vector_url": "/data/projections/ssp245-july-2031-2040.geojson"
+    },
+    {
+      "scenario": "ssp245",
+      "month": "july",
+      "start_year": 2041,
+      "end_year": 2060,
+      "vector_url": "/data/projections/ssp245-july-2041-2060.geojson"
+    },
+    {
+      "scenario": "ssp245",
+      "month": "september",
+      "start_year": 2031,
+      "end_year": 2040,
+      "vector_url": "/data/projections/ssp245-september-2031-2040.geojson"
+    },
+    {
+      "scenario": "ssp245",
+      "month": "september",
+      "start_year": 2041,
+      "end_year": 2060,
+      "vector_url": "/data/projections/ssp245-september-2041-2060.geojson"
+    },
+    {
+      "scenario": "ssp245",
+      "month": "october",
+      "start_year": 2031,
+      "end_year": 2040,
+      "vector_url": "/data/projections/ssp245-october-2031-2040.geojson"
+    },
+    {
+      "scenario": "ssp245",
+      "month": "october",
+      "start_year": 2041,
+      "end_year": 2060,
+      "vector_url": "/data/projections/ssp245-october-2041-2060.geojson"
+    },
+    {
+      "scenario": "ssp585",
+      "month": "march",
+      "start_year": 2031,
+      "end_year": 2040,
+      "vector_url": "/data/projections/ssp585-march-2031-2040.geojson"
+    },
+    {
+      "scenario": "ssp585",
+      "month": "march",
+      "start_year": 2041,
+      "end_year": 2060,
+      "vector_url": "/data/projections/ssp585-march-2041-2060.geojson"
+    },
+    {
+      "scenario": "ssp585",
+      "month": "july",
+      "start_year": 2031,
+      "end_year": 2040,
+      "vector_url": "/data/projections/ssp585-july-2031-2040.geojson"
+    },
+    {
+      "scenario": "ssp585",
+      "month": "july",
+      "start_year": 2041,
+      "end_year": 2060,
+      "vector_url": "/data/projections/ssp585-july-2041-2060.geojson"
+    },
+    {
+      "scenario": "ssp585",
+      "month": "september",
+      "start_year": 2031,
+      "end_year": 2040,
+      "vector_url": "/data/projections/ssp585-september-2031-2040.geojson"
+    },
+    {
+      "scenario": "ssp585",
+      "month": "september",
+      "start_year": 2041,
+      "end_year": 2060,
+      "vector_url": "/data/projections/ssp585-september-2041-2060.geojson"
+    },
+    {
+      "scenario": "ssp585",
+      "month": "october",
+      "start_year": 2031,
+      "end_year": 2040,
+      "vector_url": "/data/projections/ssp585-october-2031-2040.geojson"
+    },
+    {
+      "scenario": "ssp585",
+      "month": "october",
+      "start_year": 2041,
+      "end_year": 2060,
+      "vector_url": "/data/projections/ssp585-october-2041-2060.geojson"
+    }
+  ]
+}

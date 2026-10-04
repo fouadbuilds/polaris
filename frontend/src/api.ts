@@ -23,11 +23,16 @@ export async function fetchSatelliteImage(siteId: string, date: string, signal: 
 }
 
 export async function fetchSites(signal?: AbortSignal): Promise<SitesResponse> {
-  const response = await fetch(`${apiBaseUrl}/api/sites?catalog=2`, { signal })
-
-  if (!response.ok) {
-    throw new Error(`The site data could not be loaded (${response.status}).`)
+  try {
+    // The researched, bundled catalogue is the same online and offline. A
+    // running API process may still hold an older fixture until it restarts.
+    const response = await fetch('/data/sites.json', { signal })
+    if (!response.ok) throw new Error('Bundled port catalogue unavailable')
+    return await response.json() as SitesResponse
+  } catch (error) {
+    if (signal?.aborted) throw error
+    const response = await fetch(`${apiBaseUrl}/api/sites?catalog=4`, { signal })
+    if (!response.ok) throw new Error('The saved port catalogue could not be loaded.')
+    return response.json() as Promise<SitesResponse>
   }
-
-  return response.json() as Promise<SitesResponse>
 }

@@ -1,7 +1,7 @@
 // Bump the data version whenever the baked geographical files change.
 const PREFIX = 'polaris-';
-const DATA = PREFIX + 'data-v5';
-const SHELL = PREFIX + 'shell-v5';
+const DATA = PREFIX + 'data-v17';
+const SHELL = PREFIX + 'shell-v17';
 const API = PREFIX + 'previews-v1';
 const TILES = PREFIX + 'satellite-tiles-v1';
 const tileHosts = new Set(['server.arcgisonline.com', 'gibs.earthdata.nasa.gov']);
@@ -59,7 +59,9 @@ self.addEventListener('fetch', event => {
   const request = event.request;
   if (request.method !== 'GET') return;
   const url = new URL(request.url);
-  if (url.origin === self.location.origin && url.pathname.startsWith('/data/')) {
+  if (url.origin === self.location.origin && url.pathname === '/data/presentation/manifest.json') {
+    event.respondWith(networkFirst(request, DATA));
+  } else if (url.origin === self.location.origin && url.pathname.startsWith('/data/')) {
     event.respondWith(cached(request, DATA));
   } else if (['localhost', '127.0.0.1'].includes(url.hostname) && url.pathname === '/api/sites') {
     event.respondWith(networkFirst(request, API));
@@ -75,14 +77,32 @@ self.addEventListener('fetch', event => {
 });
 
 async function warmData(apiUrl) {
-  const paths = ['/data/world-land.geojson', '/data/routes-canada.geojson?display=curves-4'];
-  for (const month of ['march', 'september']) {
+  const paths = ['/data/world-land.geojson', '/data/routes-canada.geojson?display=curves-5', '/data/sites.json'];
+  const projectionUrl = '/data/projections/manifest.json';
+  const projectionResponse = await cached(new Request(new URL(projectionUrl, self.location.origin)), DATA);
+  if (!projectionResponse.ok) throw new Error('Projection manifest unavailable');
+  const projections = await projectionResponse.json();
+  paths.push(projectionUrl, ...projections.frames.map(frame => frame.vector_url));
+  for (const month of ['march', 'july', 'september', 'october']) {
     const url = `/data/ice/manifest-${month}.json`;
     const response = await cached(new Request(new URL(url, self.location.origin)), DATA);
     if (!response.ok) throw new Error('Ice manifest unavailable');
     const manifest = await response.json();
-    paths.push(...manifest.frames.map(frame => frame.vector_url));
+    paths.push(url, ...manifest.frames.filter(frame => frame.kind === 'observed').map(frame => frame.vector_url));
   }
+  // A prepared presentation pack is local data, separate from disposable viewed tiles.
+  // A missing pack does not prevent saving the bundled ice maps and catalogue.
+  let presentationReady = false;
+  try {
+    const response = await networkFirst(new Request(new URL('/data/presentation/manifest.json', self.location.origin)), DATA);
+    if (response.ok) {
+      const pack = await response.json();
+      if (pack.complete && Array.isArray(pack.assets)) {
+        paths.push('/data/presentation/manifest.json', ...pack.assets);
+        presentationReady = true;
+      }
+    }
+  } catch { /* Prepare the optional satellite pack with scripts/prepare_presentation.py. */ }
   let index = 0;
   await Promise.all(Array.from({length: 4}, async () => {
     while (index < paths.length) {
@@ -97,12 +117,13 @@ async function warmData(apiUrl) {
   }
   // Public candidate fixtures only. Never prefetch paid imagery or credentials.
   if (apiUrl) { try { await cached(new Request(apiUrl), API); } catch { /* Local API may be restarting. */ } }
+  return presentationReady;
 }
 self.addEventListener('message', event => {
   if (event.data?.type !== 'SAVE_MAPS') return;
   warming ??= warmData(event.data.apiUrl).catch(error => { warming = undefined; throw error; });
-  event.waitUntil(warming.then(() => {
-    event.source?.postMessage({type: 'MAPS_SAVED', ready: true});
+  event.waitUntil(warming.then(presentationReady => {
+    event.source?.postMessage({type: 'MAPS_SAVED', ready: true, presentationReady});
   }).catch(() => {
     event.source?.postMessage({type: 'MAPS_SAVED', ready: false});
   }));

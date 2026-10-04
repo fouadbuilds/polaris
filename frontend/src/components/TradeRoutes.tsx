@@ -3,12 +3,13 @@ import { Pane, useMapEvents } from 'react-leaflet'
 import { point } from 'leaflet'
 import { bundleRoutes } from '../routeBundles'
 import { SmoothRoute } from './SmoothRoute'
+import { RouteDistance } from './RouteDistance'
 
 export interface TradeRoute {
   type: 'Feature'
   geometry: {type: 'LineString'; coordinates: [number, number][]}
   properties: {
-    id: string; name: string; category: 'passage' | 'used' | 'proposed'; status: string
+    id: string; name: string; category: 'passage' | 'used' | 'proposed' | 'team'; status: string
     summary: string; cargo: string; season: string; waypoints: string[]; constraints: string[]
     sources: {title: string; url: string}[]; geometry_method: string
   }
@@ -29,7 +30,7 @@ export function useTradeRoutes() {
   const [selectedId, setSelectedId] = useState('nwp-victoria')
   useEffect(() => {
     const controller = new AbortController()
-    fetch('/data/routes-canada.geojson?display=curves-4', {signal: controller.signal})
+    fetch('/data/routes-canada.geojson?display=curves-5', {signal: controller.signal})
       .then(response => { if (!response.ok) throw new Error('Saved trade routes could not load.'); return response.json() })
       .then(data => { if (!controller.signal.aborted) setRoutes(data.features) })
       .catch(error => { if (!controller.signal.aborted) setError(error instanceof Error ? error.message : 'Trade routes unavailable.') })
@@ -37,7 +38,7 @@ export function useTradeRoutes() {
   }, [])
   const selected = routes.find(route => route.properties.id === selectedId)
   function toggle(id: string) { setEnabled(previous => previous.includes(id) ? previous.filter(item => item !== id) : [...previous, id]) }
-  function preset(group: 'passage' | 'used' | 'proposed' | 'all') {
+  function preset(group: 'passage' | 'used' | 'proposed' | 'team' | 'all') {
     const ids = routes.filter(route => group === 'all' || route.properties.category === group).map(route => route.properties.id)
     setEnabled(ids); setShow(true)
     if (ids[0]) setSelectedId(ids[0])
@@ -46,7 +47,7 @@ export function useTradeRoutes() {
 }
 type RouteState = ReturnType<typeof useTradeRoutes>
 
-export function TradeRouteLayer({state, onSelect, onHover}: {state: RouteState; onSelect: (id: string) => void; onHover: (id: string | null) => void}) {
+export function TradeRouteLayer({state, onSelect}: {state: RouteState; onSelect: (id: string) => void}) {
   const [zoomRevision, setZoomRevision] = useState(0)
   const map = useMapEvents({zoomend: () => setZoomRevision(value => value + 1)})
   const displayed = useMemo(() => {
@@ -58,20 +59,20 @@ export function TradeRouteLayer({state, onSelect, onHover}: {state: RouteState; 
   return <Pane name="trade-routes" style={{zIndex: 450}}>{state.show && <>
     {displayed.map(({route, positions}) => <SmoothRoute key={`${route.properties.id}-casing`} positions={positions} interactive={false}
       options={{color: 'var(--map-route-casing)', weight: 5.5, opacity: 0.94, lineCap: 'round', lineJoin: 'round',
-        dashArray: route.properties.category === 'proposed' ? '9 7' : undefined}} />)}
+        dashArray: ['proposed', 'team'].includes(route.properties.category) ? '9 7' : undefined}} />)}
     {displayed.map(({route, positions}) => <SmoothRoute key={route.properties.id} positions={positions}
       options={{color: routeColor(route.properties.id), weight: route.properties.id === state.selectedId ? 4 : 3.2, opacity: 1,
         lineCap: 'round', lineJoin: 'round', className: 'route-cable',
-        dashArray: route.properties.category === 'proposed' ? route.properties.id === 'grays-road' ? '2 6' : '9 7' : undefined}}
-      onHover={hovered => onHover(hovered ? route.properties.id : null)} onClick={() => { onHover(null); onSelect(route.properties.id) }} />)}
+        dashArray: ['proposed', 'team'].includes(route.properties.category) ? route.properties.id === 'grays-road' ? '2 6' : '9 7' : undefined}}
+      tooltip={{name: route.properties.name, status: route.properties.status}} onClick={() => onSelect(route.properties.id)} />)}
   </>}</Pane>
 }
 
 export function TradeRouteLegend({state}: {state: RouteState}) {
   return <div className="route-cable-legend" aria-label="Visible trade routes">
     {state.routes.filter(route => state.enabled.includes(route.properties.id)).map(route => <button key={route.properties.id}
-      title={route.properties.name} aria-pressed={route.properties.id === state.selectedId} onClick={() => state.setSelectedId(route.properties.id)}>
-      <i style={{borderColor: routeColor(route.properties.id), borderTopStyle: route.properties.category === 'proposed' ? 'dashed' : 'solid'}} />
+      aria-label={route.properties.name} aria-pressed={route.properties.id === state.selectedId} onClick={() => state.setSelectedId(route.properties.id)}>
+      <i style={{borderColor: routeColor(route.properties.id), borderTopStyle: ['proposed', 'team'].includes(route.properties.category) ? 'dashed' : 'solid'}} />
       {ROUTE_LABELS[route.properties.id] ?? route.properties.name}
     </button>)}
     <small>Parallel lines separate shared corridors for display.</small>
@@ -84,12 +85,13 @@ export function TradeRouteControls({state, onFocus}: {state: RouteState; onFocus
     <p className="eyebrow">Canada & Northwest Passage</p>
     <label className="layer-switch"><input type="checkbox" checked={state.show} onChange={event => state.setShow(event.target.checked)} /> Show logistics routes</label>
     <div className="route-presets" aria-label="Route groups">
-      <button onClick={() => state.preset('passage')}>Northwest Passage</button>
-      <button onClick={() => state.preset('used')}>Supply & exports</button>
-      <button onClick={() => state.preset('proposed')}>Grays Bay concepts</button>
+      <button onClick={() => state.preset('used')}>Current port connections</button>
+      <button onClick={() => state.preset('proposed')}>Published port projects</button>
+      <button onClick={() => state.preset('team')}>Team port concepts</button>
+      <button onClick={() => state.preset('passage')}>Passage alternatives</button>
       <button onClick={() => state.preset('all')}>All routes</button>
     </div>
-    <p className="route-method">Schematic corridors, not ship tracks. The ice year does not certify route access. Dashed lines are proposals or inferred connections.</p>
+    <p className="route-method">Current connections serve existing ports. Published projects and team concepts are separate; their dashed lines illustrate possible connections. Passage alternatives show through-routes.</p>
     {state.error && <p role="alert">{state.error}</p>}
     {!state.routes.length && !state.error && <p role="status">Loading saved routes…</p>}
     <label className="route-picker" htmlFor="trade-route-picker">Inspect a route
@@ -100,8 +102,8 @@ export function TradeRouteControls({state, onFocus}: {state: RouteState; onFocus
       }}>{state.routes.map(route => <option key={route.properties.id} value={route.properties.id}>{route.properties.name}</option>)}</select>
     </label>
     <details className="route-choices"><summary>Individual route visibility · {state.enabled.length} selected</summary>
-    {(['passage', 'used', 'proposed'] as const).map(category => <div className="route-group" key={category}>
-      <h3>{{passage: 'Passage corridors', used: 'Used supply / export corridors', proposed: 'Proposed / conceptual connections'}[category]}</h3>
+    {(['used', 'proposed', 'team', 'passage'] as const).map(category => <div className="route-group" key={category}>
+      <h3>{{passage: 'Passage alternatives', used: 'Current port connections', proposed: 'Published port projects', team: 'Team port concepts'}[category]}</h3>
       {state.routes.filter(route => route.properties.category === category).map(route => <div className={`route-row ${route.properties.id === state.selectedId ? 'route-row--selected' : ''}`} key={route.properties.id}>
         <input aria-label={`Show ${route.properties.name}`} type="checkbox" checked={state.enabled.includes(route.properties.id)} onChange={() => state.toggle(route.properties.id)} />
         <i className="route-color-dot" style={{background: routeColor(route.properties.id)}} /><button aria-pressed={route.properties.id === state.selectedId} onClick={() => state.setSelectedId(route.properties.id)}>{route.properties.name}</button>
@@ -110,6 +112,7 @@ export function TradeRouteControls({state, onFocus}: {state: RouteState; onFocus
     {selected && state.selected && <article className="route-detail" aria-label="Selected route evidence">
       <span className="route-status" style={{color: routeColor(selected.id)}}>{selected.status}</span>
       <h2>{selected.name}</h2>
+      <RouteDistance key={selected.id} route={state.selected} routes={state.routes} />
       <button className="route-focus" onClick={() => {
         state.setShow(true)
         state.setEnabled(previous => previous.includes(selected.id) ? previous : [...previous, selected.id])

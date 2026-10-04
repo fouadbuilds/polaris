@@ -15,6 +15,10 @@ from shapely.ops import unary_union
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCES = {
+    'resolute': {'title': 'Government of Nunavut · Resolute Bay community and High Arctic gateway', 'url': 'https://www.gov.nu.ca/en/communities/resolute-bay'},
+    'research-hub': {'title': 'NRCan · existing Arctic logistics hub at Resolute Bay', 'url': 'https://natural-resources.canada.ca/corporate/transparency/polar-continental-shelf-program-renewal'},
+    'kugluktuk': {'title': 'Government of Nunavut · Kugluktuk community', 'url': 'https://www.gov.nu.ca/en/communities/kugluktuk'},
+    'airport': {'title': 'Nunavut · new Kugluktuk air terminal opened June 2025', 'url': 'https://www.gov.nu.ca/en/newsroom/kugluktuk-naujaat-and-whale-cove-open-new-air-terminal-buildings-2025-06-18'},
     'geography': {'title': 'DRDC Canadian Arctic shipping routes · Table 2-2 (2013)', 'url': 'https://publications.gc.ca/collections/collection_2016/rddc-drdc/D68-3-065-2013-eng.pdf'},
     'transits': {'title': 'Northwest Passage transit records · through 2025', 'url': 'https://thenorthwestpassage.info/transit-statistics'},
     'cargo': {'title': 'Recorded NWP cargo transits · through 2025', 'url': 'https://thenorthwestpassage.info/wp-content/uploads/2026/01/NWP-2025-Transits-Cargo.pdf'},
@@ -133,7 +137,7 @@ def coast_aligned_display(routes):
 def feature(id, name, category, summary, cargo, season, waypoints, constraints, source_ids, positions):
     return {'type': 'Feature', 'properties': {
         'id': id, 'name': name, 'category': category,
-        'status': {'passage': 'Documented passage · ice constrained', 'used': 'Used logistics corridor · seasonal', 'proposed': 'Proposed / conceptual connection'}[category],
+        'status': {'passage': 'Documented passage · ice constrained', 'used': 'Used logistics corridor · seasonal', 'proposed': 'Published port project · illustrative connection', 'team': 'Team port concept · illustrative connection only'}[category],
         'summary': summary, 'cargo': cargo, 'season': season, 'waypoints': waypoints,
         'constraints': constraints, 'sources': [SOURCES[key] for key in source_ids],
         'geometry_method': 'Hand-placed schematic waypoints; not AIS tracks, official corridor boundaries or a navigational chart.',
@@ -142,6 +146,18 @@ def feature(id, name, category, summary, cargo, season, waypoints, constraints, 
 
 def main():
     routes = [
+        feature('resolute-feeder', 'Resolute Bay concept → Lancaster Sound', 'team',
+                'Team study idea: a community-adjacent logistics port feeding Lancaster Sound. Published sources establish an existing community and research hub, not an approved port or shipping service.',
+                'Potential community supplies, research freight and emergency support.', 'Conditional research concept; no operating season or opening date forecast.',
+                ['Resolute Bay community', 'Barrow Strait', 'Lancaster Sound'],
+                ['Community-led planning and conservation requirements.', 'Depth, ice thickness, handling and fuel storage need study.'],
+                ['resolute', 'research-hub'], [[74.7, -94.8667], [74.5, -94.5], [74.4, -91], [74.25, -85], [74.1, -80]]),
+        feature('kugluktuk-feeder', 'Kugluktuk concept → Coronation Gulf', 'team',
+                'Team study idea: improve marine resupply beside the existing community, with an airport connection for staff and food. The schematic joins a study candidate to Coronation Gulf; it is not a new carrier service.',
+                'Potential food, community dry cargo and safely handled bulk fuel.', 'Conditional research concept; reduced regional ice alone does not establish access.',
+                ['Kugluktuk community', 'Coronation Gulf', 'Western passage corridor'],
+                ['Shallow approaches, river sediment and bathymetry.', 'Community priorities, handling infrastructure and fuel permits.'],
+                ['kugluktuk', 'airport'], [[67.8274, -115.0965], [68.15, -115.1], [68.5, -114], [68.7, -113]]),
         feature('nwp-victoria', 'Northwest Passage · Victoria Strait', 'passage',
                 'Southern passage variant (3A) through the Canadian archipelago. Recorded NWP transits do not establish a regular container service on this specific line.',
                 'Bulk and general cargo have transited the NWP; this corridor is not a carrier timetable.',

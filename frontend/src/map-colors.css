@@ -3,8 +3,9 @@
   --map-land: #f4d676;
   --map-land-outline: #c6a247;
   --map-water: #68b8e0;
-  --map-ice: #ffffff;
-  --map-ice-outline: #7096ad;
+  /* Satellite overlay: blue distinguishes measured ice from white clouds. */
+  --map-ice: #64c5ec;
+  --map-ice-outline: #176a9a;
   --map-study-outline: #597b85;
   --map-port: #bd722c;
   --map-port-outline: #ffffff;
@@ -18,7 +19,44 @@
   --map-route-grays-west: #ce3681;
   --map-route-grays-east: #008fae;
   --map-route-grays-road: #667829;
+  --map-route-resolute-feeder: #7654ab;
+  --map-route-kugluktuk-feeder: #327f86;
   --map-route-casing: #ffffff;
   --map-label-background: #ffffffeb;
   --map-label-text: #394d5c;
+}
+
+/* Clear pastel basemap: warm cream land, sky-blue water and white ice.
+   Inspired by ColorBrewer's restrained qualitative schemes and Axis Maps'
+   visual-hierarchy guidance. Routes stay darker than the background for reading.
+   Scoped here so satellite imagery retains its existing overlay palette. */
+.map-shell--simple {
+  --map-land: #f5e8c5;
+  --map-land-outline: #ccb989;
+  --map-water: #b6daed;
+  --map-ice: #ffffff;
+  --map-ice-outline: #77a9c1;
+  --map-study-outline: #6594aa;
+  --map-port: #b87951;
+  --map-port-outline: #fffdf8;
+  --map-route-nwp-victoria: #ce8278;
+  --map-route-nwp-prince-wales: #648fb9;
+  --map-route-nwp-rae-simpson: #9b82aa;
+  --map-route-eastern-sealift: #65978b;
+  --map-route-western-resupply: #b29660;
+  --map-route-churchill-atlantic: #6d8092;
+  --map-route-grays-west: #af7f9b;
+  --map-route-grays-east: #6097a6;
+  --map-route-grays-road: #8a9668;
+  --map-route-resolute-feeder: #ad92c8;
+  --map-route-kugluktuk-feeder: #739fa3;
+  --map-route-casing: #f8faf5;
+  --map-label-background: #fffdf6eb;
+  --map-label-text: #40545f;
+}
+
+/* White ice on the mixed-date reference mosaic; blue on dated photographs. */
+.map-shell--reference {
+  --map-ice: #ffffff;
+  --map-ice-outline: #dceaf1;
 }

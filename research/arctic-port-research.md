@@ -285,3 +285,12 @@ Predictive checks: separate training and held-out years; compare against climato
 Claims to avoid without additional work: an exact port opening year; a guaranteed Panama cost saving; a satellite-only thickness measurement from ordinary photographs; a 10 m future climate forecast; or a commercially feasible port selected solely by how fast nearby ice declines.
 
 The strongest immediate research path is **CIS vector history → route and vessel season indicators → Sentinel scene checks → infrastructure and demand comparison → scenario uncertainty**.
+
+## Team concepts added to the dashboard
+
+The team's research shortlist now includes two community-adjacent concepts. This is a Polaris inference about locations worth investigating if access improves; the cited organizations do not endorse these port ideas.
+
+- **Resolute Bay:** Nunavut describes its position facing the Northwest Passage and its role as a High Arctic expedition and research gateway. NRCan documents an existing Arctic logistics hub here. That provides a basis to investigate a logistics port near existing services, rather than choosing an isolated coast. The marker is the approximate community centre, not a berth. Sources: [Nunavut community profile](https://www.gov.nu.ca/en/communities/resolute-bay), [NRCan logistics-hub renewal](https://natural-resources.canada.ca/corporate/transparency/polar-continental-shelf-program-renewal).
+- **Kugluktuk:** the existing community and airport provide a starting point for staff and food logistics; Nunavut opened a new air terminal in June 2025. A study could examine improved community marine resupply on Coronation Gulf. This does not establish a deep-water berth, safe fuel storage or a viable carrier service. Sources: [Nunavut community profile](https://www.gov.nu.ca/en/communities/kugluktuk), [2025 air-terminal opening](https://www.gov.nu.ca/en/newsroom/kugluktuk-naujaat-and-whale-cove-open-new-air-terminal-buildings-2025-06-18).
+
+Both require community-led planning, depths and sediment studies, ice-thickness and approach assessments, conservation review, infrastructure and demand evidence. The website separates them from existing ports and published projects. Their feeder lines are schematic study connections, not scheduled services or routes optimized against projected ice.

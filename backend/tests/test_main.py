@@ -17,7 +17,12 @@ def test_list_sites_matches_the_public_contract() -> None:
     body = response.json()
 
     assert response.status_code == 200
-    assert len(body["sites"]) == 4
+    assert len(body["sites"]) == 10
+    assert {site['id'] for site in body['sites'] if site['port_category'] == 'team'} == {'resolute-concept', 'kugluktuk-concept'}
+    assert {site['id'] for site in body['sites']} >= {'iqaluit', 'churchill', 'tuktoyaktuk', 'qikiqtarjuaq'}
+    for site in body['sites']:
+        assert site['logistics_note'] and site['marker_note']
+        assert site['selection_source_url'].startswith('https://')
     first_site = body["sites"][0]
     assert 0 <= first_site["durability_score"] <= 100
     assert len(first_site["trend_series"]) >= 2

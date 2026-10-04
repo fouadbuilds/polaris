@@ -20,10 +20,10 @@ from shapely.geometry import shape, mapping, box
 from shapely.ops import unary_union
 import shapefile
 
-from bake_ice import CACHE, OUTPUT, YEARS, TRAINING_YEARS, BOUNDS, fit_trend, predict
+from bake_ice import CACHE, OUTPUT, MONTHS, BOUNDS
 
 
-def main(months=('march', 'september')):
+def main(months=tuple(name.lower() for name, _ in MONTHS.values())):
     land_path = CACHE / 'ne_10m_land.zip'
     if not land_path.exists():
         response = httpx.get('https://naturalearth.s3.amazonaws.com/10m_physical/ne_10m_land.zip', timeout=60)
@@ -44,11 +44,16 @@ def main(months=('march', 'september')):
         land = unary_union(land_parts).simplify(0.02, preserve_topology=True)
         world_path = OUTPUT.parent / 'world-land.geojson'
         world_path.write_text(json.dumps({'type': 'FeatureCollection', 'features': world_features}, separators=(',', ':')) + '\n')
-    for month, name in [(3, 'march'), (9, 'september')]:
+    for month, (month_name, _) in MONTHS.items():
+        name = month_name.lower()
         if name not in months:
             continue
         raw = []
-        for year in YEARS:
+        manifest_path = OUTPUT / f'manifest-{name}.json'
+        manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
+        manifest['frames'] = [frame for frame in manifest['frames'] if frame['kind'] == 'observed']
+        years = [frame['year'] for frame in manifest['frames'] if frame['kind'] == 'observed']
+        for year in years:
             with rasterio.open(CACHE / f'N_{year}{month:02d}_concentration_v4.0.tif') as source:
                 raw.append(source.read(1))
                 affine, crs = source.transform, source.crs
@@ -61,16 +66,13 @@ def main(months=('march', 'september')):
         # boundary itself into a jagged, artificial ice edge.
         region = (lon >= west - 4) & (lon <= east + 4) & (lat >= south - 2) & (lat <= north + 2)
         concentration = np.where(raw <= 1000, raw / 10.0, np.nan)
-        intercept, slope = fit_trend(concentration[:len(TRAINING_YEARS)], TRAINING_YEARS)
-        manifest_path = OUTPUT / f'manifest-{name}.json'
-        manifest = json.loads(manifest_path.read_text())
         for frame in manifest['frames']:
-            values = concentration[YEARS.index(frame['year'])] if frame['kind'] == 'observed' else predict(intercept, slope, frame['year'])
+            values = concentration[years.index(frame['year'])]
             # Bridge source land cells for display, then subtract a finer land
             # boundary below. The measured ocean-cell concentrations stay intact.
             valid = np.isfinite(values)
             display = fillnodata(np.where(valid, values, 0).astype(np.float32), mask=valid.astype(np.uint8), max_search_distance=20, smoothing_iterations=0)
-            flags = raw[YEARS.index(frame['year'])] if frame['kind'] == 'observed' else raw[TRAINING_YEARS.index(2024)]
+            flags = raw[years.index(frame['year'])]
             land_cells = (flags == 2530) | (flags == 2540)
             display = np.where(land_cells, display, values)
             mask = ((display >= 15) & (display <= 100) & region).astype(np.uint8)

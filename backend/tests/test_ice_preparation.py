@@ -1,4 +1,4 @@
-"""Scientific checks for the offline map preparation's trend model."""
+"""Observed-map integrity checks and reproducibility of retired trend helpers."""
 
 import importlib.util
 import json
@@ -35,14 +35,15 @@ def test_missing_and_land_cells_cannot_become_predicted_ice():
     assert result[0, 2] == 50
 
 
-@pytest.mark.parametrize('month', ['march', 'september'])
+@pytest.mark.parametrize('month', ['march', 'july', 'september', 'october'])
 def test_saved_manifest_matches_all_baked_assets(month):
     output = ROOT / 'frontend/public/data/ice'
     data = json.loads((output / f'manifest-{month}.json').read_text())
     assert data['month'].lower() == month
     observations = [f for f in data['frames'] if f['kind'] == 'observed']
-    assert [f['year'] for f in observations] == list(range(1996, 2027))
-    assert [f['year'] for f in data['frames'] if f['kind'] == 'scenario'] == [2035, 2050]
+    assert [f['year'] for f in observations] == list(range(1996, 2026 if month in ('october', 'november') else 2027))
+    assert all(f['kind'] == 'observed' for f in data['frames'])
+    assert all(f['year'] <= data['latest_observed_year'] for f in data['frames'])
     assert len(data['sources']) == len(observations)
     for frame in data['frames']:
         assert Path(frame['vector_url']).name.startswith(month + '-')
@@ -51,8 +52,8 @@ def test_saved_manifest_matches_all_baked_assets(month):
         vector = json.loads((output / Path(frame['vector_url']).name).read_text())
         assert vector['type'] == 'FeatureCollection'
         assert all(feature['properties']['year'] == frame['year'] for feature in vector['features'])
-    assert data['holdout']['training'] == '1996–2019'
-    assert data['holdout']['validation'] == '2020–2024'
+    assert 'holdout' not in data
+    assert 'No future ice is predicted.' in data['method']
 
 
 def test_vector_boundaries_are_valid_and_stay_in_study_window():
@@ -66,3 +67,9 @@ def test_vector_boundaries_are_valid_and_stay_in_study_window():
             west, south, east, north = polygon.bounds
             assert -150.00001 <= west <= east <= -41.99999
             assert 55.99999 <= south <= north <= 80.00001
+
+
+def test_retired_future_contours_are_not_in_public_data():
+    output = ROOT / 'frontend/public/data/ice'
+    assert not list(output.glob('*-2035-outline.geojson'))
+    assert not list(output.glob('*-2050-outline.geojson'))

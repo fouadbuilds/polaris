@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
 
-function worker() {
+function worker(prepared = false) {
   const stores = new Map();
   const handlers = {};
   let online = true;
@@ -32,7 +32,9 @@ function worker() {
       if (!online) throw new Error('Offline');
       if (key(request).includes('missing-data')) return new Response('<!doctype html>', {headers: {'content-type': 'text/html'}});
       if (key(request).includes('failed')) return new Response('Quota reached', {status: 429});
-      if (key(request).includes('manifest-')) return Response.json({frames: [{vector_url: '/data/ice/saved-outline.geojson'}]});
+      if (key(request).endsWith('/data/projections/manifest.json')) return Response.json({frames: ['ssp126', 'ssp245', 'ssp585'].map(scenario => ({vector_url: `/data/projections/${scenario}.geojson`}))});
+      if (prepared && key(request).endsWith('/data/presentation/manifest.json')) return Response.json({complete: true, assets: ['/data/presentation/reference/0/0/0.jpg', '/data/presentation/2026-09-15/3/0/1.jpg']});
+      if (key(request).includes('manifest-')) return Response.json({frames: [{kind: 'observed', vector_url: '/data/ice/saved-outline.geojson'}, {kind: 'scenario', vector_url: '/data/ice/retired-outline.geojson'}]});
       return new Response('saved data');
     },
   };
@@ -72,15 +74,34 @@ test('failed API responses are not cached', async () => {
   await assert.rejects(app.get(url), /Offline/);
 });
 
-test('offline preparation saves unvisited frames and both seasonal manifests', async () => {
+test('offline preparation saves unvisited frames and all four monthly manifests', async () => {
   const app = worker();
   assert.equal((await app.warm()).ready, true);
   app.offline();
   const before = app.requests.length;
+  for (const month of ['march', 'july', 'september', 'october']) {
+    const response = await app.get(`http://127.0.0.1:5173/data/ice/manifest-${month}.json`);
+    assert.equal((await response.json()).frames.length, 2);
+  }
+  assert.equal(app.requests.some(url => url.includes('retired-outline')), false);
   const saved = await app.get('http://127.0.0.1:5173/data/ice/saved-outline.geojson');
   assert.equal(await saved.text(), 'saved data');
   assert.equal(app.requests.length, before);
-  assert.equal(await (await app.get('http://127.0.0.1:5173/data/routes-canada.geojson?display=curves-4')).text(), 'saved data');
+  assert.equal(await (await app.get('http://127.0.0.1:5173/data/routes-canada.geojson?display=curves-5')).text(), 'saved data');
+  for (const scenario of ['ssp126', 'ssp245', 'ssp585']) assert.equal(await (await app.get(`http://127.0.0.1:5173/data/projections/${scenario}.geojson`)).text(), 'saved data');
+  assert.equal(app.requests.length, before);
+});
+
+test('presentation preparation saves unvisited local satellite presets and ports', async () => {
+  const app = worker(true);
+  const status = await app.warm();
+  assert.equal(status.ready, true);
+  assert.equal(status.presentationReady, true);
+  app.offline();
+  const before = app.requests.length;
+  for (const asset of ['/data/sites.json', '/data/presentation/reference/0/0/0.jpg', '/data/presentation/2026-09-15/3/0/1.jpg']) {
+    assert.equal(await (await app.get('http://127.0.0.1:5173' + asset)).text(), 'saved data');
+  }
   assert.equal(app.requests.length, before);
 });
 

@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react'
 import { subscribeCache } from '../offline'
 
 export function CacheStatus() {
-  const [state, setState] = useState<'saving' | 'ready' | 'unavailable'>('saving')
+  const [state, setState] = useState<'saving' | 'ready' | 'presentation' | 'unavailable'>('saving')
   useEffect(() => subscribeCache(setState), [])
   return <div className="cache-status" role="status">
-    <strong>{state === 'ready' ? '✓ Ice maps & routes saved offline' : state === 'saving' ? 'Saving ice maps & routes…' : 'Offline storage not fully available'}</strong>
-    <p>{state === 'unavailable' ? 'Maps are bundled locally. Browser storage may be full or disabled.' : state === 'ready' ? 'All years and both seasons are saved on this device.' : 'Preparing all years and both seasons on this device.'} Viewed satellite tiles are cached; new areas and dates need internet. Port images are saved locally and reused.</p>
+    <strong>{state === 'presentation' ? '✓ Presentation pack & projections saved offline' : state === 'ready' ? '✓ Observations, projections, routes & ports saved offline' : state === 'saving' ? 'Saving presentation data…' : 'Offline storage not fully available'}</strong>
+    {state === 'unavailable' && <p>Keep the local website running to use the files in the project folder.</p>}
+    {state === 'ready' && <p>Satellite presets are not prepared.</p>}
   </div>
 }

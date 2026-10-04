@@ -10,15 +10,18 @@ DATA = json.loads((ROOT / 'frontend/public/data/routes-canada.geojson').read_tex
 
 def test_proposals_are_separated_from_used_logistics_and_have_sources():
     routes = DATA['features']
-    assert len({f['properties']['id'] for f in routes}) == 9
-    assert {f['properties']['category'] for f in routes} == {'used', 'passage', 'proposed'}
+    assert len({f['properties']['id'] for f in routes}) == 11
+    assert {f['properties']['category'] for f in routes} == {'used', 'passage', 'proposed', 'team'}
     for feature in routes:
         details = feature['properties']
         assert details['sources'] and all(source['url'].startswith('https://') for source in details['sources'])
         assert 'not AIS' in details['geometry_method']
         if details['id'].startswith('grays-'):
             assert details['category'] == 'proposed'
-            assert 'Proposed' in details['status']
+            assert 'Published port project' in details['status']
+        if details['category'] == 'team':
+            assert 'Team' in details['status']
+            assert 'Team study idea' in details['summary']
     assert 'independent' in DATA['metadata']['time_relationship']
 
 

@@ -42,7 +42,7 @@ test('route ordering does not swap cable identities', () => {
   assert.deepEqual(first[0],second[1]);
 });
 
-test('all nine saved routes have distinct editable palette colors', () => {
+test('all saved routes have distinct editable palette colors', () => {
   const routes = JSON.parse(fs.readFileSync(path.join(__dirname, '../public/data/routes-canada.geojson'), 'utf8')).features;
   const css = fs.readFileSync(path.join(__dirname, '../src/map-colors.css'), 'utf8');
   const colors = routes.map(route => {
@@ -50,5 +50,5 @@ test('all nine saved routes have distinct editable palette colors', () => {
     assert.ok(match, `Missing color for ${route.properties.id}`);
     return match[1].toLowerCase();
   });
-  assert.equal(new Set(colors).size, 9);
+  assert.equal(new Set(colors).size, routes.length);
 });

@@ -1,4 +1,4 @@
-"""Start the local app from Finder, reusing healthy servers when possible."""
+"""Start the local app on Windows or macOS, reusing healthy servers."""
 
 import argparse
 import json
@@ -9,6 +9,7 @@ import socket
 import subprocess
 import sys
 import time
+import webbrowser
 from urllib.error import URLError
 from urllib.request import urlopen
 
@@ -43,7 +44,7 @@ def main():
         raise RuntimeError("Node.js was not found. Install Node.js, then double-click this launcher again.")
     vite = ROOT / "frontend/node_modules/vite/bin/vite.js"
     if not vite.exists():
-        raise RuntimeError("Frontend dependencies are missing. Run scripts/dev.sh once to install them.")
+        raise RuntimeError("Frontend dependencies are missing. Run pnpm install in the frontend folder first (see README.md).")
 
     services = [
         ("API", 8000, ROOT / "backend", [sys.executable, "-m", "uvicorn", "app.main:app", "--host", "127.0.0.1", "--port", "8000"]),
@@ -56,8 +57,10 @@ def main():
         nonlocal stopping
         stopping = True
 
-    for signum in (signal.SIGINT, signal.SIGTERM, signal.SIGHUP):
+    for signum in (signal.SIGINT, signal.SIGTERM):
         signal.signal(signum, stop_signal)
+    if hasattr(signal, 'SIGHUP'):
+        signal.signal(signal.SIGHUP, stop_signal)
     try:
         for kind, port, directory, command in services:
             if ready(kind):
@@ -79,7 +82,7 @@ def main():
                 time.sleep(0.2)
         print(f"\nPolaris is ready: {URL}", flush=True)
         if not options.no_browser:
-            subprocess.run(["/usr/bin/open", URL], check=True)
+            webbrowser.open(URL)
         if processes:
             print("Keep this window open while using Polaris. Press Control+C here to stop it.", flush=True)
             while not stopping:

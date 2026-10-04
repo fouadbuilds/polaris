@@ -1,0 +1,368 @@
+{
+  "dataset": "NOAA/NSIDC Sea Ice Index, Version 4 (G02135)",
+  "source_url": "https://nsidc.org/data/g02135/versions/4",
+  "documentation_url": "https://nsidc.org/sites/default/files/documents/user-guide/g02135-v004-userguide.pdf",
+  "month": "October",
+  "bounds": [
+    [
+      56,
+      -150
+    ],
+    [
+      80,
+      -42
+    ]
+  ],
+  "native_resolution_km": 25,
+  "latest_observed_year": 2025,
+  "baseline_year": 1996,
+  "metric": "Unweighted mean concentration over a fixed set of ocean grid cells within 56\u201380\u00b0N, 150\u201342\u00b0W. This geographic window includes waters beyond Canada; it is not a national or shipping-route metric.",
+  "metric_ocean_cells": 8312,
+  "method": "Observed October monthly concentration from NOAA/NSIDC GeoTIFFs. Values 0\u20131000 are divided by 10; flagged cells are excluded. Regional means use the fixed valid ocean-cell mask. Display outlines use a 15% concentration threshold. No future ice is predicted.",
+  "limitations": [
+    "25 km grids cannot resolve many narrow Northwest Passage channels or port approaches.",
+    "Historical and recent concentration inputs change in January 2025 (GSFC to AMSR2).",
+    "October monthly averages are not daily passage conditions. Below 15% concentration is not proof of open water.",
+    "All maps describe sea ice concentration, not thickness, glacier melt or navigability."
+  ],
+  "frames": [
+    {
+      "year": 1996,
+      "kind": "observed",
+      "mean_concentration_percent": 31.7,
+      "vector_url": "/data/ice/october-1996-outline.geojson"
+    },
+    {
+      "year": 1997,
+      "kind": "observed",
+      "mean_concentration_percent": 29.3,
+      "vector_url": "/data/ice/october-1997-outline.geojson"
+    },
+    {
+      "year": 1998,
+      "kind": "observed",
+      "mean_concentration_percent": 18.4,
+      "vector_url": "/data/ice/october-1998-outline.geojson"
+    },
+    {
+      "year": 1999,
+      "kind": "observed",
+      "mean_concentration_percent": 26.0,
+      "vector_url": "/data/ice/october-1999-outline.geojson"
+    },
+    {
+      "year": 2000,
+      "kind": "observed",
+      "mean_concentration_percent": 27.7,
+      "vector_url": "/data/ice/october-2000-outline.geojson"
+    },
+    {
+      "year": 2001,
+      "kind": "observed",
+      "mean_concentration_percent": 26.2,
+      "vector_url": "/data/ice/october-2001-outline.geojson"
+    },
+    {
+      "year": 2002,
+      "kind": "observed",
+      "mean_concentration_percent": 24.2,
+      "vector_url": "/data/ice/october-2002-outline.geojson"
+    },
+    {
+      "year": 2003,
+      "kind": "observed",
+      "mean_concentration_percent": 22.0,
+      "vector_url": "/data/ice/october-2003-outline.geojson"
+    },
+    {
+      "year": 2004,
+      "kind": "observed",
+      "mean_concentration_percent": 26.5,
+      "vector_url": "/data/ice/october-2004-outline.geojson"
+    },
+    {
+      "year": 2005,
+      "kind": "observed",
+      "mean_concentration_percent": 26.0,
+      "vector_url": "/data/ice/october-2005-outline.geojson"
+    },
+    {
+      "year": 2006,
+      "kind": "observed",
+      "mean_concentration_percent": 18.4,
+      "vector_url": "/data/ice/october-2006-outline.geojson"
+    },
+    {
+      "year": 2007,
+      "kind": "observed",
+      "mean_concentration_percent": 21.5,
+      "vector_url": "/data/ice/october-2007-outline.geojson"
+    },
+    {
+      "year": 2008,
+      "kind": "observed",
+      "mean_concentration_percent": 21.4,
+      "vector_url": "/data/ice/october-2008-outline.geojson"
+    },
+    {
+      "year": 2009,
+      "kind": "observed",
+      "mean_concentration_percent": 23.5,
+      "vector_url": "/data/ice/october-2009-outline.geojson"
+    },
+    {
+      "year": 2010,
+      "kind": "observed",
+      "mean_concentration_percent": 21.1,
+      "vector_url": "/data/ice/october-2010-outline.geojson"
+    },
+    {
+      "year": 2011,
+      "kind": "observed",
+      "mean_concentration_percent": 20.2,
+      "vector_url": "/data/ice/october-2011-outline.geojson"
+    },
+    {
+      "year": 2012,
+      "kind": "observed",
+      "mean_concentration_percent": 13.8,
+      "vector_url": "/data/ice/october-2012-outline.geojson"
+    },
+    {
+      "year": 2013,
+      "kind": "observed",
+      "mean_concentration_percent": 21.5,
+      "vector_url": "/data/ice/october-2013-outline.geojson"
+    },
+    {
+      "year": 2014,
+      "kind": "observed",
+      "mean_concentration_percent": 22.8,
+      "vector_url": "/data/ice/october-2014-outline.geojson"
+    },
+    {
+      "year": 2015,
+      "kind": "observed",
+      "mean_concentration_percent": 21.6,
+      "vector_url": "/data/ice/october-2015-outline.geojson"
+    },
+    {
+      "year": 2016,
+      "kind": "observed",
+      "mean_concentration_percent": 17.1,
+      "vector_url": "/data/ice/october-2016-outline.geojson"
+    },
+    {
+      "year": 2017,
+      "kind": "observed",
+      "mean_concentration_percent": 21.5,
+      "vector_url": "/data/ice/october-2017-outline.geojson"
+    },
+    {
+      "year": 2018,
+      "kind": "observed",
+      "mean_concentration_percent": 26.0,
+      "vector_url": "/data/ice/october-2018-outline.geojson"
+    },
+    {
+      "year": 2019,
+      "kind": "observed",
+      "mean_concentration_percent": 18.3,
+      "vector_url": "/data/ice/october-2019-outline.geojson"
+    },
+    {
+      "year": 2020,
+      "kind": "observed",
+      "mean_concentration_percent": 21.5,
+      "vector_url": "/data/ice/october-2020-outline.geojson"
+    },
+    {
+      "year": 2021,
+      "kind": "observed",
+      "mean_concentration_percent": 18.0,
+      "vector_url": "/data/ice/october-2021-outline.geojson"
+    },
+    {
+      "year": 2022,
+      "kind": "observed",
+      "mean_concentration_percent": 20.3,
+      "vector_url": "/data/ice/october-2022-outline.geojson"
+    },
+    {
+      "year": 2023,
+      "kind": "observed",
+      "mean_concentration_percent": 12.8,
+      "vector_url": "/data/ice/october-2023-outline.geojson"
+    },
+    {
+      "year": 2024,
+      "kind": "observed",
+      "mean_concentration_percent": 10.7,
+      "vector_url": "/data/ice/october-2024-outline.geojson"
+    },
+    {
+      "year": 2025,
+      "kind": "observed",
+      "mean_concentration_percent": 17.3,
+      "vector_url": "/data/ice/october-2025-outline.geojson"
+    }
+  ],
+  "sources": [
+    {
+      "year": 1996,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/10_Oct/N_199610_concentration_v4.0.tif",
+      "sha256": "7f77e60f600be4a9deed7e1727dd8d4f1dfc9072b5dc8027bce24f7b94105a11"
+    },
+    {
+      "year": 1997,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/10_Oct/N_199710_concentration_v4.0.tif",
+      "sha256": "6282b4b6c15056a3a6abfe5e03b76d079ec8ab5fa262ffdb8437cdaeb53eee06"
+    },
+    {
+      "year": 1998,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/10_Oct/N_199810_concentration_v4.0.tif",
+      "sha256": "45ccc0bcf40551c05f15cb5456ff004af0e764f2957ef622fb0cbf6c321f7180"
+    },
+    {
+      "year": 1999,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/10_Oct/N_199910_concentration_v4.0.tif",
+      "sha256": "a73e3117825b077bc422eb0088ca2668d530e82a48f1c9d9ec82c4cc962e27a5"
+    },
+    {
+      "year": 2000,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/10_Oct/N_200010_concentration_v4.0.tif",
+      "sha256": "c8b1e539650e35decd54a2d64da49fb02229526816ead08b75802581afc72cd6"
+    },
+    {
+      "year": 2001,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/10_Oct/N_200110_concentration_v4.0.tif",
+      "sha256": "636759264b3389118005efdd587caec4580ac1af60283ee5a861bea2e914b678"
+    },
+    {
+      "year": 2002,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/10_Oct/N_200210_concentration_v4.0.tif",
+      "sha256": "368ae70cd1c9ed39985c7c17ea128b1c0000e04a4f31eeda496bf4d6ed488124"
+    },
+    {
+      "year": 2003,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/10_Oct/N_200310_concentration_v4.0.tif",
+      "sha256": "4d7cb5bf034462f21cb3f59985f3ce2e0559a643862b197b8caf3ececb5e349e"
+    },
+    {
+      "year": 2004,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/10_Oct/N_200410_concentration_v4.0.tif",
+      "sha256": "37340302d08c2f42fe3ceff0c46c60a56c3fa925ae4e6a239aabc190cdc3a520"
+    },
+    {
+      "year": 2005,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/10_Oct/N_200510_concentration_v4.0.tif",
+      "sha256": "77114821dd052e2ed969712435ef83e2c89f633bed114291592c27d50d323812"
+    },
+    {
+      "year": 2006,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/10_Oct/N_200610_concentration_v4.0.tif",
+      "sha256": "5f4684d473eb3de910a24d32d481e4fab08cfee5c61ed9ec9c45cf970ba48646"
+    },
+    {
+      "year": 2007,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/10_Oct/N_200710_concentration_v4.0.tif",
+      "sha256": "feeb89bfb9f482c875d15d8e6a70db6a01596c906d13a435e048b8cdfa485c60"
+    },
+    {
+      "year": 2008,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/10_Oct/N_200810_concentration_v4.0.tif",
+      "sha256": "83423473cd4a212acccd406d1e922e2d075c47c8f3ec498486f3910d30f9353c"
+    },
+    {
+      "year": 2009,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/10_Oct/N_200910_concentration_v4.0.tif",
+      "sha256": "d6ff952e2f04b4bcca49f10010a9356829a07b3ce0e29c18d3488c7e9b812cb9"
+    },
+    {
+      "year": 2010,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/10_Oct/N_201010_concentration_v4.0.tif",
+      "sha256": "f84000bb7769457a39b3430908ab604e55fc991c649411a140075cc9dcb968ed"
+    },
+    {
+      "year": 2011,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/10_Oct/N_201110_concentration_v4.0.tif",
+      "sha256": "519039aea037b445831e6edcab10f791cafe24d66f094c65630226e55ba80c1a"
+    },
+    {
+      "year": 2012,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/10_Oct/N_201210_concentration_v4.0.tif",
+      "sha256": "d8beba13d260de22b62c907b06857f6836dca7decab11a4ccf685a4b55d29fb5"
+    },
+    {
+      "year": 2013,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/10_Oct/N_201310_concentration_v4.0.tif",
+      "sha256": "dfe71ea757e400a6f0bf18941c67f066a66c17287bfbd5d5baf994d014199bab"
+    },
+    {
+      "year": 2014,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/10_Oct/N_201410_concentration_v4.0.tif",
+      "sha256": "dea87b97c89ee561e14d37e3e1e313187d6a319ed03b201d744454e7350e28c1"
+    },
+    {
+      "year": 2015,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/10_Oct/N_201510_concentration_v4.0.tif",
+      "sha256": "e66d08114247139c57dcc34bb61c2a16b5321bb3e66755189c6ade9e8df5386b"
+    },
+    {
+      "year": 2016,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/10_Oct/N_201610_concentration_v4.0.tif",
+      "sha256": "15294427a275c928ab1fb5e1fe6a6082a27c5dcc3d863a1ecf5e8033c82cbe40"
+    },
+    {
+      "year": 2017,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/10_Oct/N_201710_concentration_v4.0.tif",
+      "sha256": "714158ebb917b46908a19c37f4cc133b83ab564b78c0d31f1875ee6e15f2cdf2"
+    },
+    {
+      "year": 2018,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/10_Oct/N_201810_concentration_v4.0.tif",
+      "sha256": "2b85741a086d8e5d603099038bd23cd9ffb04e6d84e461691a1bd9626ac5dfc5"
+    },
+    {
+      "year": 2019,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/10_Oct/N_201910_concentration_v4.0.tif",
+      "sha256": "36b0dc0ee18606998b1b1d7cb163aebe633a6c61fd465e326a0a2f97376023ab"
+    },
+    {
+      "year": 2020,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/10_Oct/N_202010_concentration_v4.0.tif",
+      "sha256": "71bf2bb95453dbc12b6607ddac90e9803b177a6ce81618f9a8e2ed58cc95f1bd"
+    },
+    {
+      "year": 2021,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/10_Oct/N_202110_concentration_v4.0.tif",
+      "sha256": "f44d767ddb5b3e54039566407323ba55bf6cc0e65c4764f8c07961d01ca125f3"
+    },
+    {
+      "year": 2022,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/10_Oct/N_202210_concentration_v4.0.tif",
+      "sha256": "3056352a80209af825d9ac059fa63a49f1c3e237dc998c05e824d88886a7028e"
+    },
+    {
+      "year": 2023,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/10_Oct/N_202310_concentration_v4.0.tif",
+      "sha256": "dfdc0a1590cea9a928be3bb0d76015219ea1a92a2af95e747d5277e9fe89c0e3"
+    },
+    {
+      "year": 2024,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/10_Oct/N_202410_concentration_v4.0.tif",
+      "sha256": "7d4f0943a2894f48278ca44b0bf5525dc6f22f1c69c41c3c683ced551c0c7dc2"
+    },
+    {
+      "year": 2025,
+      "url": "https://noaadata.apps.nsidc.org/NOAA/G02135/north/monthly/geotiff/10_Oct/N_202510_concentration_v4.0.tif",
+      "sha256": "6cc32e77591244c965f03169077d4ea5edbae95bad76b67fb446917c86a290f2"
+    }
+  ],
+  "display_method": "Display approximation of ice extent at >=15% concentration. Land gaps in the coarse grid are interpolated for display, then Natural Earth land polygons are subtracted. Boundaries are smoothed using 18 km closing and 8 km opening, simplified at 3 km. Small features may disappear. Statistics use original ocean cells; these outlines are not higher-resolution ice observations.",
+  "land_source": {
+    "url": "https://www.naturalearthdata.com/downloads/10m-physical-vectors/10m-land/",
+    "download_url": "https://naturalearth.s3.amazonaws.com/10m_physical/ne_10m_land.zip",
+    "sha256": "e547d749445eaa0964aba76738090ec88f5e63c4585122170f98c67a7ea922dc"
+  }
+}

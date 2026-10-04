@@ -13,9 +13,9 @@ export default function App() {
   return <main className="dashboard">
     <header className="app-header">
       <div className="dashboard-brand"><span className="brand-mark">P</span><div><p className="brand">POLARIS</p><h1>Canadian Arctic observatory</h1></div></div>
-      <div className="header-context"><span className="status-dot" />1996–2026 observations <span className="header-divider">/</span> 2035 & 2050 scenarios</div>
+      <div className="header-context"><span className="status-dot" />1996–2026 observed ice</div>
     </header>
-    <div className="data-status" aria-label="Data status"><span>NSIDC measured ice · future outlines are trend scenarios · port scores are illustrative</span><a href="https://nsidc.org/data/g02135/versions/4" target="_blank" rel="noreferrer">Data source ↗</a></div>
+    <div className="data-status" aria-label="Data status"><span>NOAA / NSIDC observations · ECCC / CMIP6 projections</span><span>Exact files & methods in Layers & time</span></div>
     <section className="workspace" aria-label="Arctic map dashboard">
       {isLoading && <div className="map-status" role="status">Loading dashboard…</div>}
       {error && <div className="map-status map-status--error" role="alert"><p>{error}</p><button onClick={() => reload()}>Try again</button></div>}

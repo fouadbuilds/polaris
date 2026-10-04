@@ -4,6 +4,9 @@ export interface TrendPoint {
 }
 
 export interface Site {
+  port_category: 'current' | 'proposed' | 'team'
+  logistics_note: string
+  marker_note: string
   id: string
   name: string
   lat: number
