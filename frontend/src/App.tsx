@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { SiteMap } from './components/SiteMap'
 import { SitePanel } from './components/SitePanel'
 import { useSites } from './hooks/useSites'
+import polarisMark from './assets/polaris-mark.png'
 
 export default function App() {
   const { data, error, isLoading, reload } = useSites()
@@ -10,12 +11,12 @@ export default function App() {
   useEffect(() => { if (!selectedSiteId && sites[0]) setSelectedSiteId(sites[0].id) }, [sites, selectedSiteId])
   const selectedSite = sites.find(site => site.id === selectedSiteId) ?? null
   const activeYear = selectedSite?.trend_series.at(-1)?.year ?? 2024
-  return <main className="dashboard">
+  return <main className="dashboard dashboard--field-console">
     <header className="app-header">
-      <div className="dashboard-brand"><span className="brand-mark">P</span><div><p className="brand">POLARIS</p><h1>Canadian Arctic observatory</h1></div></div>
-      <div className="header-context"><span className="status-dot" />1996–2026 observed ice</div>
+      <div className="dashboard-brand"><span className="brand-mark" aria-hidden="true"><img src={polarisMark} alt="" /></span><div><p className="brand">POLARIS · FIELD CONSOLE</p><h1>Canadian Arctic maritime observatory</h1></div></div>
+      <div className="header-context"><span className="status-dot" /><span>Observed ice</span><span className="header-divider">/</span><span>1996–2026</span></div>
     </header>
-    <div className="data-status" aria-label="Data status"><span>NOAA / NSIDC observations · ECCC / CMIP6 projections</span><span>Exact files & methods in Layers & time</span></div>
+    <div className="data-status" aria-label="Data status"><span><strong>Data register</strong> NOAA / NSIDC observations · ECCC / CMIP6 projections</span><span>Methods and source files in Layers & time</span></div>
     <section className="workspace" aria-label="Arctic map dashboard">
       {isLoading && <div className="map-status" role="status">Loading dashboard…</div>}
       {error && <div className="map-status map-status--error" role="alert"><p>{error}</p><button onClick={() => reload()}>Try again</button></div>}
