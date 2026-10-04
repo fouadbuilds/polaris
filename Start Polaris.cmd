@@ -9,7 +9,7 @@ if not exist "%GIT_BASH%" (
   pause
   exit /b 1
 )
-"%GIT_BASH%" "%~dp0Start Polaris.sh" %*
+"%GIT_BASH%" "%~dp0start.sh" %*
 set "EXIT_CODE=%ERRORLEVEL%"
 if not "%EXIT_CODE%"=="0" (
   echo.

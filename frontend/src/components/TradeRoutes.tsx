@@ -20,25 +20,25 @@ const ROUTE_LABELS: Record<string, string> = {
   'grays-west': 'Grays Bay · Pacific', 'grays-east': 'Grays Bay · Atlantic', 'grays-road': 'Grays Bay road',
 }
 export const routeColor = (id: string) => `var(--map-route-${id})`
-const DEFAULT_ROUTES = ['nwp-victoria', 'nwp-prince-wales']
+const DEFAULT_ROUTES = ['eastern-sealift', 'western-resupply', 'churchill-atlantic']
 
 export function useTradeRoutes() {
   const [routes, setRoutes] = useState<TradeRoute[]>([])
   const [error, setError] = useState<string | null>(null)
   const [enabled, setEnabled] = useState<string[]>(DEFAULT_ROUTES)
   const [show, setShow] = useState(true)
-  const [selectedId, setSelectedId] = useState('nwp-victoria')
+  const [selectedId, setSelectedId] = useState('eastern-sealift')
   useEffect(() => {
     const controller = new AbortController()
     fetch('/data/routes-canada.geojson?display=curves-5', {signal: controller.signal})
       .then(response => { if (!response.ok) throw new Error('Saved trade routes could not load.'); return response.json() })
-      .then(data => { if (!controller.signal.aborted) setRoutes(data.features) })
+      .then(data => { if (!controller.signal.aborted) setRoutes(data.features.filter((route: TradeRoute) => route.properties.category !== 'team')) })
       .catch(error => { if (!controller.signal.aborted) setError(error instanceof Error ? error.message : 'Trade routes unavailable.') })
     return () => controller.abort()
   }, [])
   const selected = routes.find(route => route.properties.id === selectedId)
   function toggle(id: string) { setEnabled(previous => previous.includes(id) ? previous.filter(item => item !== id) : [...previous, id]) }
-  function preset(group: 'passage' | 'used' | 'proposed' | 'team' | 'all') {
+  function preset(group: 'passage' | 'used' | 'proposed' | 'all') {
     const ids = routes.filter(route => group === 'all' || route.properties.category === group).map(route => route.properties.id)
     setEnabled(ids); setShow(true)
     if (ids[0]) setSelectedId(ids[0])
@@ -83,15 +83,19 @@ export function TradeRouteControls({state, onFocus}: {state: RouteState; onFocus
   const selected = state.selected?.properties
   return <section className="trade-route-controls" aria-label="Canadian trade route controls">
     <p className="eyebrow">Canada & Northwest Passage</p>
-    <label className="layer-switch"><input type="checkbox" checked={state.show} onChange={event => state.setShow(event.target.checked)} /> Show logistics routes</label>
+    <label className="layer-switch"><input type="checkbox" checked={state.show} onChange={event => state.setShow(event.target.checked)} /> Show shipping corridors</label>
     <div className="route-presets" aria-label="Route groups">
-      <button onClick={() => state.preset('used')}>Current port connections</button>
-      <button onClick={() => state.preset('proposed')}>Published port projects</button>
-      <button onClick={() => state.preset('team')}>Team port concepts</button>
-      <button onClick={() => state.preset('passage')}>Passage alternatives</button>
+      <button onClick={() => state.preset('used')}>Operating supply & export networks</button>
+      <button onClick={() => state.preset('proposed')}>Proposed infrastructure connections</button>
+      <button onClick={() => state.preset('passage')}>Northwest Passage variants</button>
       <button onClick={() => state.preset('all')}>All routes</button>
     </div>
-    <p className="route-method">Current connections serve existing ports. Published projects and team concepts are separate; their dashed lines illustrate possible connections. Passage alternatives show through-routes.</p>
+    <p className="route-method">Operating networks show Canadian community resupply and exports. Northwest Passage variants are different waterways through the Canadian Arctic between the Atlantic and Pacific. Proposed connections illustrate possible links to a published infrastructure project.</p>
+    <details className="route-explainer"><summary>Is this what Canada uses?</summary>
+      <p>Canadian Arctic shipping includes seasonal community resupply, fuel delivery and exports. The operating networks show documented service areas and export connections. Their lines are schematic connections, not recorded vessel tracks.</p>
+      <p>The three Northwest Passage variants compare ways through the archipelago, not scheduled shipping services. A passage crossing and a delivery to an Arctic community are different journeys. Actual routes depend on the vessel, draft and ice conditions.</p>
+      <p><a href="https://tc.canada.ca/en/corporate-services/transparency/corporate-management-reporting/transportation-canada-annual-reports/transportation-canada-2024/role-canada-s-transportation-network" target="_blank" rel="noreferrer">Transport Canada · northern transport and resupply</a></p>
+    </details>
     {state.error && <p role="alert">{state.error}</p>}
     {!state.routes.length && !state.error && <p role="status">Loading saved routes…</p>}
     <label className="route-picker" htmlFor="trade-route-picker">Inspect a route
@@ -102,8 +106,8 @@ export function TradeRouteControls({state, onFocus}: {state: RouteState; onFocus
       }}>{state.routes.map(route => <option key={route.properties.id} value={route.properties.id}>{route.properties.name}</option>)}</select>
     </label>
     <details className="route-choices"><summary>Individual route visibility · {state.enabled.length} selected</summary>
-    {(['used', 'proposed', 'team', 'passage'] as const).map(category => <div className="route-group" key={category}>
-      <h3>{{passage: 'Passage alternatives', used: 'Current port connections', proposed: 'Published port projects', team: 'Team port concepts'}[category]}</h3>
+    {(['used', 'passage', 'proposed'] as const).map(category => <div className="route-group" key={category}>
+      <h3>{{passage: 'Northwest Passage variants', used: 'Operating supply & export networks', proposed: 'Proposed infrastructure connections'}[category]}</h3>
       {state.routes.filter(route => route.properties.category === category).map(route => <div className={`route-row ${route.properties.id === state.selectedId ? 'route-row--selected' : ''}`} key={route.properties.id}>
         <input aria-label={`Show ${route.properties.name}`} type="checkbox" checked={state.enabled.includes(route.properties.id)} onChange={() => state.toggle(route.properties.id)} />
         <i className="route-color-dot" style={{background: routeColor(route.properties.id)}} /><button aria-pressed={route.properties.id === state.selectedId} onClick={() => state.setSelectedId(route.properties.id)}>{route.properties.name}</button>

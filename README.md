@@ -16,7 +16,7 @@ Read-only source verification: `backend/.venv/Scripts/python.exe scripts/verify_
 
 ## Start on Windows
 
-Double-click **Start Polaris.cmd** in this folder. It uses Git Bash to run the canonical `Start Polaris.sh` launcher, starts the API and website, waits for both, and opens `http://127.0.0.1:5173/` in your default browser. Keep its window open; press **Ctrl+C** to stop the services it started. Healthy existing Polaris services are reused; unrelated applications occupying ports 8000 or 5173 produce an error.
+Double-click **Start Polaris.cmd** in this folder. It uses Git Bash to run the canonical `start.sh` launcher, starts the API and website, waits for both, and opens `http://127.0.0.1:5173/` in your default browser. Keep its window open; press **Ctrl+C** to stop the services it started. Healthy existing Polaris services are reused; unrelated applications occupying ports 8000 or 5173 produce an error.
 
 ### One-time setup
 
@@ -47,7 +47,7 @@ pnpm dev --host 127.0.0.1
 
 ## Start on macOS / Linux
 
-Run `bash scripts/dev.sh` once to install dependencies and start both services. After setup, run `./Start\ Polaris.sh` from a terminal for the canonical launcher. On macOS, **Start Polaris.command** provides Finder double-click startup and browser opening. Keep its Terminal window open; **Control+C** stops it. If executable bits were lost in your checkout, run `chmod +x "Start Polaris.sh" "Start Polaris.command"` once.
+Run `bash scripts/dev.sh` once to install dependencies and start both services. After setup, run `bash start.sh` from a terminal for the canonical launcher. On macOS, **Start Polaris.command** provides Finder double-click startup and browser opening. Keep its Terminal window open; **Control+C** stops it. If executable bits were lost in your checkout, run `chmod +x "Start Polaris.command"` once.
 
 Manual backend setup uses `python3 -m venv backend/.venv`, then `backend/.venv/bin/python -m pip install -e './backend[dev]'`. From `backend`, run `.venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8000`. Start the frontend with `pnpm dev` from `frontend`.
 

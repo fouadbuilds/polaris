@@ -319,3 +319,12 @@ button:not(:disabled):active { transform: scale(.96); }
 @media (prefers-reduced-motion: reduce) {
   .ruler-card, .map-date-card { animation: none; }
 }
+
+.ice-month-ruler { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 2px; margin: 12px 0; align-items: center; }
+.ice-month-ruler span, .ice-month-ruler button { padding: 10px 0; text-align: center; font-size: 10px; color: #647985; }
+.ice-month-ruler button { border: 1px solid #a7c6d6; border-radius: 4px; background: #edf5f8; color: #174b63; cursor: pointer; min-height: 44px; }
+.ice-month-ruler button[aria-pressed="true"] { background: #174b63; color: white; }
+.ice-metric-explanation, .route-explainer { font-size: 13px; line-height: 1.5; color: #496575; }
+.route-explainer { margin: 12px 0; }
+
+.ice-year-notice { padding: 10px; border-left: 3px solid #b67a23; background: #fff5e4; font-size: 13px; line-height: 1.5; }

@@ -29,7 +29,9 @@ interface IceManifest {
 export function useIceHistory() {
   const [month, setMonth] = useState<IceMonth>('september')
   const [data, setData] = useState<IceManifest | null>(null)
-  const [year, setYear] = useState<number | null>(null)
+  const [selection, setSelection] = useState<{year: number; notice: string | null}>({year: 2025, notice: null})
+  const year = selection.year
+  const setYear = (value: number) => setSelection({year: value, notice: null})
   const [error, setError] = useState<string | null>(null)
   useEffect(() => {
     const controller = new AbortController()
@@ -45,13 +47,16 @@ export function useIceHistory() {
         const observed = {...manifest, frames: manifest.frames.filter(frame => frame.kind === 'observed')}
         if (!observed.frames.length) throw new Error('No observed ice maps are available.')
         setData(observed)
-        setYear(previous => observed.frames.some(frame => frame.year === previous) ? previous : manifest.latest_observed_year)
+        setSelection(previous => {
+          if (observed.frames.some(frame => frame.year === previous.year)) return previous
+          return {year: manifest.latest_observed_year, notice: `${manifest.month} ${previous.year} is unavailable. Showing ${manifest.month} ${manifest.latest_observed_year}; choose that year for the other months to compare the same annual cycle.`}
+        })
       })
       .catch(err => { if (!controller.signal.aborted) setError(err instanceof Error ? err.message : 'Unable to load ice history.') })
     return () => controller.abort()
   }, [month])
   const activeData = data?.month.toLowerCase() === month ? data : null
-  return { data: activeData, year, setYear, month, setMonth, error, frame: activeData?.frames.find(frame => frame.year === year) ?? null }
+  return { data: activeData, year, setYear, yearNotice: selection.notice, month, setMonth, error, frame: activeData?.frames.find(frame => frame.year === year) ?? null }
 }
 
 export function IceHistoryControls({ history, active = true }: { history: ReturnType<typeof useIceHistory>; active?: boolean }) {
@@ -65,6 +70,7 @@ export function IceHistoryControls({ history, active = true }: { history: Return
       <div><span className="eyebrow">{!active ? 'Custom photograph date active' : 'Measured sea ice'}</span>
         <strong>{active ? `${data.month} ${frame.year}` : 'Choose an ice preset'}</strong></div>
     </div>
+    {history.yearNotice && <p role="status" className="ice-year-notice">{history.yearNotice}</p>}
     <p className="source-credit">Observed ice: <a href={data.source_url} target="_blank" rel="noreferrer">NOAA / NSIDC Sea Ice Index v4</a>.</p>
     <div className="ice-presets">
       {[{ year: data.baseline_year, label: 'Historical ice' }, { year: 2005, label: 'Historical' }, { year: 2015, label: 'Historical' }, ...(data.latest_observed_year !== 2025 ? [{ year: 2025, label: 'Recent' }] : []), { year: data.latest_observed_year, label: 'Latest available' }].map(preset =>
@@ -75,7 +81,9 @@ export function IceHistoryControls({ history, active = true }: { history: Return
       onChange={event => setYear(data.frames[Number(event.target.value)].year)} />
     <div className="ice-slider-endpoints"><span>{data.baseline_year}</span><span>{data.latest_observed_year} · latest observation</span></div>
     {active && <>
-    <div className="ice-history-metric"><strong>{frame.mean_concentration_percent.toFixed(1)}%</strong><span>Regional mean concentration</span></div>
+    <div className="ice-history-metric"><strong>{frame.mean_concentration_percent.toFixed(1)}%</strong><span>Average ice cover across the study region</span></div>
+    <p className="ice-metric-explanation">This averages the ice-covered share of each sampled ocean cell inside the dashed study region for {data.month} {frame.year}. For example, 30% means the sampled cells average 30% ice cover; some can be ice-free while others are heavily iced.</p>
+    <p className="ice-metric-explanation">Use it to compare the same month across years. The region includes waters beyond Canada. It does not tell you whether a particular route or port is open.</p>
     <p>Monthly ice concentration · {data.month}{data.latest_observed_year < 2026 ? ` · Latest complete year: ${data.latest_observed_year}` : ''}.</p>
     <details className="ice-method"><summary>Sources & how these maps are made</summary>
       <p><a href={data.source_url} target="_blank" rel="noreferrer">{data.dataset}</a> · <a href={data.documentation_url} target="_blank" rel="noreferrer">Source documentation</a></p>
