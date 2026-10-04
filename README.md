@@ -6,11 +6,11 @@ The dashboard combines observed regional ice, published ECCC / CMIP6 climate pro
 
 ## Start on Windows
 
-Double-click **Start Polaris.cmd** in this folder. It starts the API and website, waits for both, and opens `http://127.0.0.1:5173/` in your default browser. Keep its window open; press **Ctrl+C** to stop the services it started. Healthy existing Polaris services are reused; unrelated applications occupying ports 8000 or 5173 produce an error.
+Double-click **Start Polaris.cmd** in this folder. It uses Git Bash to run the canonical `Start Polaris.sh` launcher, starts the API and website, waits for both, and opens `http://127.0.0.1:5173/` in your default browser. Keep its window open; press **Ctrl+C** to stop the services it started. Healthy existing Polaris services are reused; unrelated applications occupying ports 8000 or 5173 produce an error.
 
 ### One-time setup
 
-Install Python 3.11+ and Node.js with pnpm 10.32.1 available. In PowerShell, from this project folder:
+Install Git for Windows, Python 3.11+, and Node.js with pnpm 10.32.1 available. In PowerShell, from this project folder:
 
 ```powershell
 python -m venv backend/.venv
@@ -20,7 +20,7 @@ pnpm install --frozen-lockfile
 cd ..
 ```
 
-Setup needs internet; installed dependencies and the saved presentation pack work locally. The Windows launcher can also find the bundled Codex Node runtime when available.
+Setup needs internet; installed dependencies and the saved presentation pack work locally. The launch supervisor can also find the bundled Codex Node runtime when available.
 
 For manual startup in separate terminals:
 
@@ -37,7 +37,7 @@ pnpm dev --host 127.0.0.1
 
 ## Start on macOS / Linux
 
-Run `bash scripts/dev.sh` once to install dependencies and start both services. On macOS, **Start Polaris.command** then provides double-click startup and browser opening. Keep its Terminal window open; **Control+C** stops it.
+Run `bash scripts/dev.sh` once to install dependencies and start both services. After setup, run `./Start\ Polaris.sh` from a terminal for the canonical launcher. On macOS, **Start Polaris.command** provides Finder double-click startup and browser opening. Keep its Terminal window open; **Control+C** stops it. If executable bits were lost in your checkout, run `chmod +x "Start Polaris.sh" "Start Polaris.command"` once.
 
 Manual backend setup uses `python3 -m venv backend/.venv`, then `backend/.venv/bin/python -m pip install -e './backend[dev]'`. From `backend`, run `.venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8000`. Start the frontend with `pnpm dev` from `frontend`.
 

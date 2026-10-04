@@ -17,6 +17,18 @@ ROOT = Path(__file__).resolve().parents[1]
 URL = "http://127.0.0.1:5173/"
 
 
+def find_node() -> str | None:
+    """Find a regular Node install, then the bundled Codex runtime when present."""
+    if node := shutil.which("node"):
+        return node
+    runtime = Path.home() / ".cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin"
+    for name in ("node.exe", "node"):
+        candidate = runtime / name
+        if candidate.is_file():
+            return str(candidate)
+    return None
+
+
 def ready(kind):
     url = "http://127.0.0.1:8000/openapi.json" if kind == "API" else URL
     try:
@@ -39,7 +51,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--no-browser", action="store_true", help="Check startup without opening a browser")
     options = parser.parse_args()
-    node = shutil.which("node")
+    node = find_node()
     if not node:
         raise RuntimeError("Node.js was not found. Install Node.js, then double-click this launcher again.")
     vite = ROOT / "frontend/node_modules/vite/bin/vite.js"

@@ -1,18 +1,14 @@
-#!/bin/bash
-# Double-click in Finder to start Polaris.
-set -e
-cd "$(dirname "$0")"
+#!/usr/bin/env bash
+# Finder bridge for the canonical shell launcher.
+set -uo pipefail
 
-export PATH="/opt/homebrew/bin:/usr/local/bin:$HOME/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin:$PATH"
+ROOT_DIR="$(cd -- "$(dirname -- "$0")" && pwd)"
+"$ROOT_DIR/Start Polaris.sh" "$@"
+EXIT_CODE=$?
 
-if [ ! -x backend/.venv/bin/python ]; then
-  echo "Polaris needs its initial setup. Run scripts/dev.sh once, then try again."
-  read -r -p "Press Return to close. "
-  exit 1
-fi
-
-if ! backend/.venv/bin/python scripts/launch.py "$@"; then
+if [ "$EXIT_CODE" -ne 0 ]; then
   echo
   read -r -p "Polaris could not start. Press Return to close. "
-  exit 1
 fi
+
+exit "$EXIT_CODE"
